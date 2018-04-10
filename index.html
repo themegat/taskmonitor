@@ -2,11 +2,46 @@
     <head>
         <meta charset = "UTF-8">
         <title>Task Monitor</title>
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="css/semantic.min.css" />
+        <link rel="stylesheet" href="css/calendar.min.css" />
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <!-- <h1>Hello World!</h1>
         We are using node <script>document.write(process.versions.node)</script>,
         Chrome <script>document.write(process.versions.chrome)</script>,
-        and Electron <script>document.write(process.versions.electron)</script>.
+        and Electron <script>document.write(process.versions.electron)</script>. -->
+        
+        <div class="ui grid pad">
+            <div class="six wide column olive">
+                <button id="btnTest" class="ui button">Simple Button</button>
+            </div>
+            <div class="six wide column olive">
+               <h3 id="headTest"></h3>
+            </div>
+        </div>
+
+        <div class="ui grid pad">
+            <div class="ui calendar" id="example1">
+                <div class="ui input left icon">
+                  <i class="calendar icon"></i>
+                  <input type="text" placeholder="Date/Time">
+                </div>
+              </div>
+        </div>
+
+      
     </body>
+    <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+
+<!-- normal script imports etc  -->
+<script src="js/jquery.js"></script>    
+<script src="js/semantic.min.js"></script>
+<script src="js/calendar.min.js"></script>
+<!-- Insert this line after script imports -->
+<script>if (window.module) module = window.module;</script>
+
+    
+    <!-- <script src="js/calendar.min.js" onload="window.$ = window.jQuery = module.exports;"></script> -->
+    <script src="js/view.js"></script>
 </html>
