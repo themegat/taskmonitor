@@ -4,9 +4,13 @@ const url = require('url');
 
 function createWindow(){
     let win = new BrowserWindow({
-        width: 800, height: 600, 
-        x: 10, y: 10, minimizable: false, maximizable: false,
-        alwaysOnTop: true})
+        width: 350, height: 450, 
+        x: 1000, y: 40, minimizable: false, maximizable: false,
+        alwaysOnTop: true,
+        frame: false,
+        resizable: false,
+        movable: false,
+        skipTaskbar: true})
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
