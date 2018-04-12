@@ -42,3 +42,48 @@ var TaskFlowUIConfig = function (operation) {
     }
 };
 
+var TaskLogState = function () {
+    this.currentTask = "";
+    this.operationIndex = 0;
+    TaskFlowUIConfig(TASK_FLOW_LIST[this.operationIndex])
+};
+
+// TaskLogPerform.prototype.next = function(){
+//     if(this.currentTask == ""){
+//         TaskFlowUIConfig(TASK_FLOW_LIST[this.operationIndex]);
+//     }
+// };
+
+var tls;
+$(".hideable").hide();
+$('#txtQuestion').html("");
+setTimeout(function () {
+    tls = new TaskLogState();
+}, 10000);
+$('#btnNext').on("click", function () {
+    if (tls.operationIndex == 0) {
+        tls.currentTask = $('#txtTaskDetails').val();
+        $('#segTaskDetails').html(tls.currentTask);
+        tls.operationIndex = 1;
+        TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+    } else if (tls.operationIndex == 2) {
+        $('#txtTaskDetails').val("");
+        tls.operationIndex = 0;
+        TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+    }
+});
+$('#btnYes').on("click", function () {
+    if (tls.operationIndex == 1) {
+        $(".hideable").hide();
+        $('#txtQuestion').html("");
+        setTimeout(function () {
+            TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+        }, 10000);
+    }
+});
+$('#btnNo').on("click", function () {
+    if (tls.operationIndex == 1) {
+        tls.operationIndex = 2;
+        TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+    }
+});

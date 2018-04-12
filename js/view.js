@@ -7,7 +7,7 @@ var appInitHieght = win.getSize()[1];
 // $('#btnTest').on('click', function () {
 //     $('#headTest').text("button clicked");
 // })
-$('#timeTaskEnd').calendar();
+$('#lo_TimePicker').calendar();
 $('#btnCloseApp').on("click", function () {
     win.close();
 });
@@ -40,13 +40,13 @@ var appState = new AppViewState();
 var ind = 0;
 $('#btnResizeApp').on("click", function () {
     // appState.toggleCollapse();
-    if (ind <= 2) {
-        TaskFlowUIConfig(TASK_FLOW_LIST[ind]);
-        console.log("e");
-    }else{
-        ind = -1;
-    }
-    ind++;
+    // if (ind <= 2) {
+    //     TaskFlowUIConfig(TASK_FLOW_LIST[ind]);
+    //     console.log("e");
+    // }else{
+    //     ind = -1;
+    // }
+    // ind++;
 });
 
 //End control state
