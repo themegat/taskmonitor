@@ -5,3 +5,11 @@
 .ad_margin{
     margin: 2% 2% auto !important;
 }
+
+.text_area_no_resize{
+    resize: none !important;
+}
+
+.hidden{
+    display: none;
+}

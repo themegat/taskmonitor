@@ -3,11 +3,11 @@ const remote = require('electron').remote;
 var win = remote.getCurrentWindow();
 var appInitHieght = win.getSize()[1];
 
-$('#headTest').text("this is a test");
-$('#btnTest').on('click', function () {
-    $('#headTest').text("button clicked");
-})
-$('#example1').calendar();
+// $('#headTest').text("this is a test");
+// $('#btnTest').on('click', function () {
+//     $('#headTest').text("button clicked");
+// })
+$('#timeTaskEnd').calendar();
 $('#btnCloseApp').on("click", function () {
     win.close();
 });

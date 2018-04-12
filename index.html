@@ -9,7 +9,9 @@
 </head>
 
 <body>
+    <!-- Entire app display in a single grid -->
     <div class="ui grid">
+        <!-- Title/Menu/Header of the app -->
         <div id="rowTitle" class="row">
             <div class="sixteen wide column blue">
                 <button id="btnCloseApp" class="ui icon button ad_margin">
@@ -20,11 +22,47 @@
                 </button>
             </div>
         </div>>
-
+        <!-- Body of the app (is collapsable) -->
         <div id="rowBody" class="row">
-            <div class="sixteen wide column">
-                <h3 id="headTest"></h3>
+            <div class="one wide column"></div>
+            <div class="fourteen wide column center">
+                
+                <!-- Question -->
+                <div class="ui segment red inverted raised">
+                    <p>
+                        What have you been up to? 
+                    </p>
+                </div>
+
+                <!-- Task logging form -->
+                <div id="frmTaskLog" class="ui form">
+                    <!-- Task detail input -->
+                    <div class="field hidden">
+                        <label>Task</label>
+                        <textarea id="txtTaskDetails" rows="4" class="text_area_no_resize"></textarea>
+                    </div>
+                </div>
+                <!-- Task end time picker -->
+                <div class="ui calendar" id="timePicker">
+                        <div class="ui input left icon">
+                            <i class="calendar icon"></i>
+                            <input id="txtTime" type="text" placeholder="Date/Time">
+                        </div>
+                    </div>
+                <br>
+                <!-- Task log action buttons - yes/no -->
+                <div class="ui buttons">
+                    <button class="ui button positive">Yes</button>
+                    <div class="or"></div>
+                    <button class="ui button negetive">No</button>
+                </div>
+                <!-- Task log action button - next -->
+                <button class="ui button right labeled icon">
+                    <i class="right arrow icon"></i>
+                    Next
+                </button>
             </div>
+            <div class="one wide column"></div>
         </div>
     </div>
 

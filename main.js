@@ -13,7 +13,8 @@ function createWindow(){
         frame: false,
         resizable: false,
         movable: false,
-        skipTaskbar: true})
+        skipTaskbar: true,
+        opacity: 0.9})
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',
