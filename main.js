@@ -7,7 +7,7 @@ function createWindow(){
     var appWidth = 350;
     var screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
     let win = new BrowserWindow({
-        width: 350, height: 450, 
+        width: appWidth, height: 450, 
         x: (screenWidth - appWidth), y: 40, minimizable: false, maximizable: false,
         alwaysOnTop: true,
         frame: false,

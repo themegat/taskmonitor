@@ -26,55 +26,54 @@
         <div id="rowBody" class="row">
             <div class="one wide column"></div>
             <div class="fourteen wide column center">
-                
+
                 <!-- Question -->
                 <div class="ui segment red inverted raised">
-                    <p>
-                        What have you been up to? 
+                    <p id="txtQuestion">
+                        No question
                     </p>
                 </div>
 
                 <!-- Task logging form -->
                 <div id="frmTaskLog" class="ui form">
                     <!-- Task detail input -->
-                    <div class="field hidden">
+                    <div id="lo_TextIn" class="field hideable hidden">
                         <label>Task</label>
-                        <textarea id="txtTaskDetails" rows="4" class="text_area_no_resize"></textarea>
+                        <textarea id="txtTaskDetails" rows="4" class="text_area_no_resize diabled"></textarea>
                     </div>
-                </div>
-                <!-- Task end time picker -->
-                <div class="ui calendar" id="timePicker">
+                    <!-- Display text for the current task -->
+                    <div id="lo_TextDisplay" class="field hideable hidden">
+                        <label>Task</label>
+                        <div id="segTaskDetails" class="ui segment">
+                            On the other hand, my scenario seems to be a very good fit 
+                            for CSS, so I was hoping there is some kind of a CSS 
+                            trick to let me do it. I have a printable version hyperlink on my form. 
+                        </div>
+                    </div>
+                    <!-- Task end time picker -->
+                    <div class="ui calendar hideable hidden" id="lo_TimePicker">
                         <div class="ui input left icon">
                             <i class="calendar icon"></i>
                             <input id="txtTime" type="text" placeholder="Date/Time">
                         </div>
                     </div>
-                <br>
-                <!-- Task log action buttons - yes/no -->
-                <div class="ui buttons">
-                    <button class="ui button positive">Yes</button>
-                    <div class="or"></div>
-                    <button class="ui button negetive">No</button>
+                    <br>
+                    <!-- Task log action buttons - yes/no -->
+                    <div id="lo_ResponseButtons" class="ui buttons hideable hidden">
+                        <button id="btnYes" class="ui button positive">Yes</button>
+                        <div class="or"></div>
+                        <button id="btnNo" class="ui button negetive">No</button>
+                    </div>
+                    <!-- Task log action button - next -->
+                    <button id="btnNext" class="ui button right labeled icon hideable hidden">
+                        <i class="right arrow icon"></i>
+                        Next
+                    </button>
                 </div>
-                <!-- Task log action button - next -->
-                <button class="ui button right labeled icon">
-                    <i class="right arrow icon"></i>
-                    Next
-                </button>
             </div>
             <div class="one wide column"></div>
         </div>
     </div>
-
-    <!-- <div class="ui grid ad_margin">
-        <div class="ui calendar" id="example1">
-            <div class="ui input left icon">
-                <i class="calendar icon"></i>
-                <input type="text" placeholder="Date/Time">
-            </div>
-        </div>
-    </div> -->
-
 
 </body>
 <script>if (typeof module === 'object') { window.module = module; module = undefined; }</script>
@@ -83,6 +82,7 @@
 <script src="js/jquery.js"></script>
 <script src="js/semantic.min.js"></script>
 <script src="js/calendar.min.js"></script>
+<script src="js/task_log_flow.js"></script>
 <!-- Insert this line after script imports -->
 <script>if (window.module) module = window.module;</script>
 

@@ -14,11 +14,11 @@ $('#btnCloseApp').on("click", function () {
 
 //Control the view state of the application (collapse view)
 
-var AppViewState = function(){
+var AppViewState = function () {
     this.isAppCollapsed = false;
 };
 
-AppViewState.prototype.toggleCollapse = function(){
+AppViewState.prototype.toggleCollapse = function () {
     if (!this.isAppCollapsed) {
         $('#rowBody').hide();
         $('body').css('overflow-y', 'hidden');
@@ -37,8 +37,16 @@ AppViewState.prototype.toggleCollapse = function(){
 };
 
 var appState = new AppViewState();
+var ind = 0;
 $('#btnResizeApp').on("click", function () {
-    appState.toggleCollapse();
+    // appState.toggleCollapse();
+    if (ind <= 2) {
+        TaskFlowUIConfig(TASK_FLOW_LIST[ind]);
+        console.log("e");
+    }else{
+        ind = -1;
+    }
+    ind++;
 });
 
 //End control state
