@@ -48,28 +48,81 @@ var TaskLogState = function () {
     TaskFlowUIConfig(TASK_FLOW_LIST[this.operationIndex])
 };
 
-// TaskLogPerform.prototype.next = function(){
-//     if(this.currentTask == ""){
-//         TaskFlowUIConfig(TASK_FLOW_LIST[this.operationIndex]);
-//     }
-// };
+var TaskLog = function () {
+    this.arTaskLog = [];
+};
+
+TaskLog.prototype.add = function (taskDescription, taskDate) {
+    this.arTaskLog.push({ description: taskDescription, time: taskDate });
+};
+
+TaskLog.prototype.get = function (index) {
+    if (this.arTaskLog.length > 0) {
+        return this.arTaskLog[index];
+    } else {
+        return null;
+    }
+};
+
+TaskLog.prototype.getLast = function () {
+    if (this.arTaskLog.length > 0) {
+        return this.get(this.arTaskLog.length - 1);
+    }
+};
+
+TaskLog.prototype.getSize = function 
+() {
+    return this.arTaskLog.length;
+}
+
+var _taskLog = new TaskLog();
 
 var tls;
+var timeDelay = 1000;
 $(".hideable").hide();
 $('#txtQuestion').html("");
 setTimeout(function () {
     tls = new TaskLogState();
-}, 10000);
+}, timeDelay);
 $('#btnNext').on("click", function () {
     if (tls.operationIndex == 0) {
         tls.currentTask = $('#txtTaskDetails').val();
-        $('#segTaskDetails').html(tls.currentTask);
-        tls.operationIndex = 1;
-        TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+        if (tls.currentTask == "" || tls.currentTask.length < 5) {
+            Toast("Invalid task description");
+        } else {
+            $('#segTaskDetails').html(tls.currentTask);
+            tls.operationIndex = 1;
+            TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+        }
     } else if (tls.operationIndex == 2) {
         $('#txtTaskDetails').val("");
-        tls.operationIndex = 0;
-        TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+        var strTime = $('#txtTime').val();
+        if (strTime == "") {
+            Toast("Select a time to continue");
+        } else {
+            var result = _dateTime.isTimePast(strTime);
+            if (parseInt(result) > 0) {
+                Toast("Invalid time selected. Cannot select a future value");
+            } else {
+                if (_taskLog.getSize() <= 0) {
+                    _taskLog.add(tls.currentTask, _dateTime.getDate() + " " + strTime);
+                    tls.operationIndex = 0;
+                    TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+                } else {
+                    var taskObj = _taskLog.getLast();
+                    if (taskObj !== null) {
+                        result = _dateTime.compare(_dateTime.getDate() + " " + strTime, taskObj.time);
+                        if (result <= 0) {
+                            Toast("invalid time selected.")
+                        } else {
+                            _taskLog.add(tls.currentTask, _dateTime.getDate() + " " + strTime);
+                            tls.operationIndex = 0;
+                            TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+                        }
+                    }
+                }
+            }
+        }
     }
 });
 $('#btnYes').on("click", function () {
@@ -78,7 +131,7 @@ $('#btnYes').on("click", function () {
         $('#txtQuestion').html("");
         setTimeout(function () {
             TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
-        }, 10000);
+        }, timeDelay);
     }
 });
 $('#btnNo').on("click", function () {

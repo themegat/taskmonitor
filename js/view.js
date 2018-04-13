@@ -1,14 +1,57 @@
 
 const remote = require('electron').remote;
+const {dialog} = require('electron').remote;
+var fs = require('fs').remote;
 var win = remote.getCurrentWindow();
 var appInitHieght = win.getSize()[1];
 
-// $('#headTest').text("this is a test");
-// $('#btnTest').on('click', function () {
-//     $('#headTest').text("button clicked");
-// })
-$('#lo_TimePicker').calendar();
+//# Custom alert object
+var Toast = function(message){
+    dialog.showErrorBox("Task Monitor", message);
+};
+
+//# Date/Time object, initializes todays date and compares dates
+var DateTime = function(){
+    var dateNow = new Date();
+    var month = dateNow.getMonth() + 1, year = dateNow.getFullYear(), day = dateNow.getDate();
+    this.date = year + "-" + month + "-" + day;
+};
+
+DateTime.prototype.getDate = function(){
+    return this.date;
+};
+
+DateTime.prototype.compare = function(date, dateCompareTo){
+    var d1 = new Date(date).getTime(), d2 = new Date(dateCompareTo).getTime();
+    if(d1 > d2){
+        return 1;
+    }else if(d1 < d2){
+        return -1;
+    }else{
+        return 0;
+    }
+};
+
+DateTime.prototype.isTimePast = function(stringTime){
+    var stringDate = this.date + " " + stringTime;
+    var datePast = new Date(stringDate).getTime();
+    var dateNow = new Date().getTime();
+
+    if(datePast > dateNow){
+        return 1;
+    }else if(datePast < dateNow){
+        return -1;
+    }else{
+        return 0;
+    }
+};
+
+var _dateTime = new DateTime();
+
+
+$('#lo_TimePicker').calendar({ampm: false, type: 'time'});
 $('#btnCloseApp').on("click", function () {
+    saveLogFile();
     win.close();
 });
 
@@ -42,7 +85,6 @@ $('#btnResizeApp').on("click", function () {
     // appState.toggleCollapse();
     // if (ind <= 2) {
     //     TaskFlowUIConfig(TASK_FLOW_LIST[ind]);
-    //     console.log("e");
     // }else{
     //     ind = -1;
     // }
@@ -50,3 +92,11 @@ $('#btnResizeApp').on("click", function () {
 });
 
 //End control state
+
+var saveLogFile = function(){
+    var fileName = "Log/logData.txt";
+    var content = "Task description;Task Time";
+    fs.writeFile(fileName, content, (err) =>{
+        Toast("Cannot save log file");
+    });
+};
