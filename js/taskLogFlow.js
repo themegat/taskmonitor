@@ -75,6 +75,14 @@ TaskLog.prototype.getSize = function
     return this.arTaskLog.length;
 }
 
+TaskLog.prototype.allDataToString = function(){
+    var result = "";
+    for(let task of this.arTaskLog){
+        result = result + "\n" + task.description + ";" + task.time;
+    }
+    return result;
+};
+
 var _taskLog = new TaskLog();
 
 var tls;

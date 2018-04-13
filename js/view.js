@@ -1,7 +1,7 @@
 
 const remote = require('electron').remote;
 const {dialog} = require('electron').remote;
-var fs = require('fs').remote;
+const jetpack = require('fs-jetpack');
 var win = remote.getCurrentWindow();
 var appInitHieght = win.getSize()[1];
 
@@ -94,9 +94,7 @@ $('#btnResizeApp').on("click", function () {
 //End control state
 
 var saveLogFile = function(){
-    var fileName = "Log/logData.txt";
-    var content = "Task description;Task Time";
-    fs.writeFile(fileName, content, (err) =>{
-        Toast("Cannot save log file");
-    });
+    var fileName = "C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt";
+    var content = "Task description;Task Time" + _taskLog.allDataToString();
+    jetpack.write(fileName, content);
 };
