@@ -105,44 +105,18 @@ TaskLog.prototype.allDataToString = function () {
     return result;
 };
 
-//Initialize a new Task logging object and load data from file
-var _taskLog = new TaskLog();
-
-$(document).ready(function () {
-    var data = _logFile.open();
-    if (data !== false) {
-        data = data.split("\n");
-        var task;
-        for (var i = 1; i < data.length; i++) {
-            task = data[i];
-            task = task.split(";");
-            _taskLog.add(task[0], task[1]);
-        }
-    }
-});
-
-//tls - Task log state
-var tls;
-//The delay task logging operations
-var timeDelay = 10000;
-$(".hideable").hide();
-$('#txtQuestion').html("");
-setTimeout(function () {
-    tls = new TaskLogState();
-}, timeDelay);
-
 //User action, button events for next button
 $('#btnNext').on("click", function () {
-    if (tls.operationIndex == 0) {
-        tls.currentTask = $('#txtTaskDetails').val();
-        if (tls.currentTask == "" || tls.currentTask.length < 5) {
+    if (_tls.operationIndex == 0) {
+        _tls.currentTask = $('#txtTaskDetails').val();
+        if (_tls.currentTask == "" || _tls.currentTask.length < 5) {
             Toast("Invalid task description");
         } else {
-            $('#segTaskDetails').html(tls.currentTask);
-            tls.operationIndex = 1;
-            TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+            $('#segTaskDetails').html(_tls.currentTask);
+            _tls.operationIndex = 1;
+            TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
         }
-    } else if (tls.operationIndex == 2) {
+    } else if (_tls.operationIndex == 2) {
         $('#txtTaskDetails').val("");
         var strTime = $('#txtTime').val();
         if (strTime == "") {
@@ -153,9 +127,9 @@ $('#btnNext').on("click", function () {
                 Toast("Invalid time selected. Cannot select a future value");
             } else {
                 if (_taskLog.getSize() <= 0) {
-                    _taskLog.add(tls.currentTask, _dateTime.getDate() + " " + strTime);
-                    tls.operationIndex = 0;
-                    TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+                    _taskLog.add(_tls.currentTask, _dateTime.getDate() + " " + strTime);
+                    _tls.operationIndex = 0;
+                    TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
                 } else {
                     var taskObj = _taskLog.getLast();
                     if (taskObj !== null) {
@@ -163,9 +137,9 @@ $('#btnNext').on("click", function () {
                         if (result <= 0) {
                             Toast("invalid time selected.")
                         } else {
-                            _taskLog.add(tls.currentTask, _dateTime.getDate() + " " + strTime);
-                            tls.operationIndex = 0;
-                            TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+                            _taskLog.add(_tls.currentTask, _dateTime.getDate() + " " + strTime);
+                            _tls.operationIndex = 0;
+                            TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
                         }
                     }
                 }
@@ -176,19 +150,19 @@ $('#btnNext').on("click", function () {
 
 //User action, button events for yes/no buttons
 $('#btnYes').on("click", function () {
-    if (tls.operationIndex == 1) {
+    if (_tls.operationIndex == 1) {
         $(".hideable").hide();
         $('#txtQuestion').html("");
         _appState.toggleCollapse();
         setTimeout(function () {
-            TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+            TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
             _appState.toggleCollapse();
-        }, timeDelay);
+        }, _timeDelay);
     }
 });
 $('#btnNo').on("click", function () {
-    if (tls.operationIndex == 1) {
-        tls.operationIndex = 2;
-        TaskFlowUIConfig(TASK_FLOW_LIST[tls.operationIndex]);
+    if (_tls.operationIndex == 1) {
+        _tls.operationIndex = 2;
+        TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
     }
 });

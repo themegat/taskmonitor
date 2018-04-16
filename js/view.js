@@ -50,8 +50,6 @@ DateTime.prototype.isTimePast = function (stringTime) {
         return 0;
     }
 };
-//Initialize a new date time object
-var _dateTime = new DateTime();
 
 $('#lo_TimePicker').calendar({ ampm: false, type: 'time' });
 $('#btnCloseApp').on("click", function () {
@@ -73,6 +71,7 @@ AppViewState.prototype.toggleCollapse = function () {
         $("#btnResizeApp_icon").removeClass("up");
         $('#btnResizeApp_icon').addClass("down");
         win.setSize(win.getSize()[0], 50);
+        win.setOpacity(0.5);
         this.isAppCollapsed = true;
     } else {
         $('#rowBody').show();
@@ -80,12 +79,11 @@ AppViewState.prototype.toggleCollapse = function () {
         $("#btnResizeApp_icon").removeClass("down");
         $('#btnResizeApp_icon').addClass("up");
         win.setSize(win.getSize()[0], appInitHieght);
+        win.setOpacity(0.9);
         this.isAppCollapsed = false;
     }
 };
 
-//Initialize a new App state object
-var _appState = new AppViewState();
 // var ind = 0;
 // $('#btnResizeApp').on("click", function () {
 // });
@@ -118,5 +116,3 @@ LogFile.prototype.append = function (content) {
         jetpack.append(this.path, content);
     }
 };
-//Initialize a new Log file object
-var _logFile = new LogFile("C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt");
