@@ -1,57 +1,62 @@
 
 const remote = require('electron').remote;
-const {dialog} = require('electron').remote;
+const { dialog } = require('electron').remote;
 const jetpack = require('fs-jetpack');
 var win = remote.getCurrentWindow();
 var appInitHieght = win.getSize()[1];
 
 //# Custom alert object
-var Toast = function(message){
+var Toast = function (message) {
     dialog.showErrorBox("Task Monitor", message);
 };
 
-//# Date/Time object, initializes todays date and compares dates
-var DateTime = function(){
+/*  Date/Time object, initializes todays date and compares dates
+    Has the following methods:
+        - get todays date
+        - compare two dates
+        - chech if date is a past date
+*/
+var DateTime = function () {
     var dateNow = new Date();
     var month = dateNow.getMonth() + 1, year = dateNow.getFullYear(), day = dateNow.getDate();
     this.date = year + "-" + month + "-" + day;
 };
 
-DateTime.prototype.getDate = function(){
+DateTime.prototype.getDate = function () {
     return this.date;
 };
 
-DateTime.prototype.compare = function(date, dateCompareTo){
+DateTime.prototype.compare = function (date, dateCompareTo) {
     var d1 = new Date(date).getTime(), d2 = new Date(dateCompareTo).getTime();
-    if(d1 > d2){
+    if (d1 > d2) {
         return 1;
-    }else if(d1 < d2){
+    } else if (d1 < d2) {
         return -1;
-    }else{
+    } else {
         return 0;
     }
 };
 
-DateTime.prototype.isTimePast = function(stringTime){
+DateTime.prototype.isTimePast = function (stringTime) {
     var stringDate = this.date + " " + stringTime;
     var datePast = new Date(stringDate).getTime();
     var dateNow = new Date().getTime();
 
-    if(datePast > dateNow){
+    if (datePast > dateNow) {
         return 1;
-    }else if(datePast < dateNow){
+    } else if (datePast < dateNow) {
         return -1;
-    }else{
+    } else {
         return 0;
     }
 };
-
+//Initialize a new date time object
 var _dateTime = new DateTime();
 
-
-$('#lo_TimePicker').calendar({ampm: false, type: 'time'});
+$('#lo_TimePicker').calendar({ ampm: false, type: 'time' });
 $('#btnCloseApp').on("click", function () {
-    saveLogFile();
+    var content = "Task description;Task Time" + _taskLog.allDataToString();
+    _logFile.save(content);
     win.close();
 });
 
@@ -79,22 +84,39 @@ AppViewState.prototype.toggleCollapse = function () {
     }
 };
 
-var appState = new AppViewState();
-var ind = 0;
-$('#btnResizeApp').on("click", function () {
-    // appState.toggleCollapse();
-    // if (ind <= 2) {
-    //     TaskFlowUIConfig(TASK_FLOW_LIST[ind]);
-    // }else{
-    //     ind = -1;
-    // }
-    // ind++;
-});
+//Initialize a new App state object
+var _appState = new AppViewState();
+// var ind = 0;
+// $('#btnResizeApp').on("click", function () {
+// });
 
-//End control state
 
-var saveLogFile = function(){
-    var fileName = "C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt";
-    var content = "Task description;Task Time" + _taskLog.allDataToString();
-    jetpack.write(fileName, content);
+/*
+    Object that performs the following log file operations
+    -Read a file (checks if files exists)
+    -Write to a a file
+    -Append to a file (checks if files exists)
+*/
+
+var LogFile = function (path) {
+    this.path = path || "C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt";
 };
+LogFile.prototype.save = function (content) {
+    var path = this.path;
+    jetpack.write(path, content);
+};
+LogFile.prototype.open = function () {
+    if (jetpack.exists(this.path) !== false) {
+        console.log('file');
+        return jetpack.read(this.path);
+    } else {
+        return false;
+    }
+};
+LogFile.prototype.append = function (content) {
+    if (jetpack.exists(this.path) !== false) {
+        jetpack.append(this.path, content);
+    }
+};
+//Initialize a new Log file object
+var _logFile = new LogFile("C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt");
