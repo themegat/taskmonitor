@@ -4,7 +4,7 @@ const path = require('path');
 const url = require('url');
 
 function createWindow(){
-    var appWidth = 325, appHeight = 410;
+    var appWidth = 725, appHeight = 410;
     var screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
     let win = new BrowserWindow({
         width: appWidth, height: appHeight, 
