@@ -64,21 +64,24 @@ var AppViewState = function () {
     this.isAppCollapsed = false;
 };
 
-AppViewState.prototype.toggleCollapse = function () {
+AppViewState.prototype.toggleCollapse = function (size) {
+    size = size | 410;
     if (!this.isAppCollapsed) {
         $('#rowBody').hide();
-        $('body').css('overflow-y', 'hidden');
+        // $('body').css('overflow-y', 'hidden');
         $("#btnResizeApp_icon").removeClass("up");
         $('#btnResizeApp_icon').addClass("down");
-        win.setSize(win.getSize()[0], 50);
+        ResizeApp(50, null);
+        // win.setSize(win.getSize()[0], 50);
         win.setOpacity(0.5);
         this.isAppCollapsed = true;
     } else {
-        $('#rowBody').show();
-        $('body').css('overflow-y', 'auto');
+        // $('#rowBody').show();
+        // $('body').css('overflow-y', 'auto');
         $("#btnResizeApp_icon").removeClass("down");
         $('#btnResizeApp_icon').addClass("up");
-        win.setSize(win.getSize()[0], appInitHieght);
+        ResizeApp(size, function () { $('#rowBody').show() });
+        // win.setSize(win.getSize()[0], appInitHieght);
         win.setOpacity(0.9);
         this.isAppCollapsed = false;
     }
@@ -114,5 +117,36 @@ LogFile.prototype.open = function () {
 LogFile.prototype.append = function (content) {
     if (jetpack.exists(this.path) !== false) {
         jetpack.append(this.path, content);
+    }
+};
+
+var ResizeApp = function (size, funct) {
+    var startSize = win.getSize()[1];
+    var endSize = size | 20;
+    var resizeBy = 10;
+    if (endSize < startSize) {
+        var resizeInterval = setInterval(function () {
+            if (startSize <= (endSize + resizeBy)) {
+                if (funct !== null && funct !== undefined) {
+                    funct();
+                }                
+                clearInterval(resizeInterval);
+                win.setSize(win.getSize()[0], endSize);
+            }
+            startSize = startSize - resizeBy;
+            win.setSize(win.getSize()[0], startSize);
+        }, 10);
+    } else {
+        var resizeInterval = setInterval(function () {
+            if (startSize >= (endSize - resizeBy)) {
+                if (funct !== null && funct !== undefined) {
+                    funct();
+                }
+                clearInterval(resizeInterval);
+                win.setSize(win.getSize()[0], endSize);
+            }
+            startSize = startSize + resizeBy;
+            win.setSize(win.getSize()[0], startSize);
+        }, 10);
     }
 };

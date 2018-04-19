@@ -15,6 +15,7 @@ var TASK_FLOW_LIST = [];
 TASK_FLOW_LIST.push(new TaskLogOperation("What have you been up to?", "text", "next"));
 TASK_FLOW_LIST.push(new TaskLogOperation("Are you still performing this task", "display", "response"));
 TASK_FLOW_LIST.push(new TaskLogOperation("When did u finish the task?", "time", "next"));
+TASK_FLOW_LIST.push(new TaskLogOperation("You are not signed in. Sign in to continue.", "login", ""));
 
 /*
     Configure the user interface based on operation to be performed. 
@@ -39,6 +40,10 @@ var TaskFlowUIConfig = function (operation) {
         case "time":
             $('#lo_TimePicker').removeClass("hidden");
             $('#lo_TimePicker').show();
+            break;
+        case "login":
+            $('#lo_login').removeClass("hidden");
+            $('#lo_login').show();
             break;
     }
 
@@ -164,5 +169,14 @@ $('#btnNo').on("click", function () {
     if (_tls.operationIndex == 1) {
         _tls.operationIndex = 2;
         TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
+    }
+});
+
+$('#btnLogin').on("click", function () {
+    var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
+    _user.setUser(id, fName, lName);
+    if (_user.authenticate()) {
+        _appState.toggleCollapse();
+        startTaskLogging();
     }
 });

@@ -36,6 +36,22 @@
 
                 <!-- Task logging form -->
                 <div id="frmTaskLog" class="ui form">
+                    <!-- Login details input -->
+                    <div id="lo_login" class="hideable hidden">
+                        <div class="field">
+                            <label>Employee Number</label>
+                            <input type="text" id="txtEmpNo" placeholder="Employee Number" maxlength="4" minlength="4" />
+                        </div>
+                        <div class="field">
+                            <label>First Name</label>
+                            <input type="text" id="txtFName" placeholder="First Name" minlength="3" maxlength="20" />
+                        </div>
+                        <div class="field">
+                            <label>Surname</label>
+                            <input type="text" id="txtLName" placeholder="Surname" minlength="3" maxlength="20" />
+                        </div>
+                        <button class="ui button" id="btnLogin">Login</button>
+                    </div>
                     <!-- Task detail input -->
                     <div id="lo_TextIn" class="field hideable hidden">
                         <label>Task</label>
