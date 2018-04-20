@@ -174,9 +174,12 @@ $('#btnNo').on("click", function () {
 
 $('#btnLogin').on("click", function () {
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
-    _user.setUser(id, fName, lName);
-    if (_user.authenticate()) {
-        _appState.toggleCollapse();
-        startTaskLogging();
-    }
+    _user.setUser(id, fName, lName, function () {
+        _user.authenticate(function (result) {
+            if (result) {
+                _appState.toggleCollapse();
+                startTaskLogging();
+            }
+        });
+    });
 });

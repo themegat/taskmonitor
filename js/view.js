@@ -108,7 +108,6 @@ LogFile.prototype.save = function (content) {
 };
 LogFile.prototype.open = function () {
     if (jetpack.exists(this.path) !== false) {
-        console.log('file');
         return jetpack.read(this.path);
     } else {
         return false;

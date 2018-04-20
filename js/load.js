@@ -5,8 +5,11 @@ var _tls;
 // var _timeDelay = 900000, _timeDelayAppStart = 300000;
 var _timeDelay = 10000, _timeDelayAppStart = 5000;
 var _user;
+var _dbConnect;
 
 $(document).ready(function () {
+    //Initialize the database connection
+    _dbConnect = new DBConnection();
     //Initialize a new App user object
     _user = new AppUser();
     //Initialize a new date time object
@@ -20,9 +23,6 @@ $(document).ready(function () {
 
     $(".hideable").hide();
     $('#txtQuestion').html("");
-    // setTimeout(function () {
-    //     ResizeApp(450, function(){$('#lo_login').show();});
-    // }, 3000);
 
     _appState.toggleCollapse();
     var data = _logFile.open();
@@ -36,14 +36,16 @@ $(document).ready(function () {
         }
     }
 
-    if (!_user.authenticate()) {
-        setTimeout(function () {
-            TaskFlowUIConfig(TASK_FLOW_LIST[3]);
-            _appState.toggleCollapse(430);
-        }, 2000);
-    } else {
-        startTaskLogging();
-    }
+    _user.authenticate(function (result) {
+        if (result) {
+            startTaskLogging();
+        } else {
+            setTimeout(function () {
+                TaskFlowUIConfig(TASK_FLOW_LIST[3]);
+                _appState.toggleCollapse(430);
+            }, 2000);
+        }
+    });
 });
 
 var startTaskLogging = function () {

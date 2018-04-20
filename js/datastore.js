@@ -1,23 +1,61 @@
 var mySql = require('mysql');
-
 $(document).ready(function () {
-    var conn = mySql.createConnection({
+});
+
+var DBConnection = function () {
+    this.connection = mySql.createConnection({
         host: "192.168.15.173",
         user: "admin",
-        password: "Password1"
-    })
+        password: "Password1",
+        database: "task_db"
+    }, function (err, data) {
+        if (err) {
+            throw err;
+        } else {
+            return true;
+        }
+    });
+};
 
-    conn.connect(function (err) {
-        if (err) throw err;
-        console.log("Connected to mysql");
-        var query = "show databases";
-        conn.query(query, function (err, result) {
-            if (err) throw err;
-            console.log("Sql Result:\n");
-            console.log(result);
+DBConnection.prototype.userGet = function (id, callback) {
+    var connection = this.connection;
+    connection.connect(function (err) {
+        if (err) {
+            callback(false);
+        }
+        var query = "select * from user where id='" + id + "'";
+        connection.query(query, function (err, result) {
+            if (err) {
+                callback(false);
+            }
+            if (result.length === 0) {
+                callback(false);
+            } else {
+                callback(true);
+            }
         });
     });
-});
+};
+
+DBConnection.prototype.userNew = function (id, firstName, lastName, callback) {
+    var connection = this.connection;
+    connection.connect(function (err) {
+        // if (err) throw err;
+        callback(false);
+        var query = "insert into user values ('" + id + "','" + firstName + "','" + lastName + "')";
+        connection.query(query, function (err) {
+            if (err) {
+                if (String(err).indexOf("ER_DUP_ENTRY") > -1) {
+                    callback(true);
+                } else {
+                    callback(false);
+                }
+            } else {
+                callback(true);
+            }
+        });
+    });
+};
 
 var AppUser = function () {
     this.id = "";
@@ -41,18 +79,21 @@ AppUser.prototype.init = function () {
     }
 };
 
-AppUser.prototype.authenticate = function () {
+AppUser.prototype.authenticate = function (callback) {
+    var userID;
     if (!this.isInit) {
         this.init();
     }
-    if (this.id == "") {
-        return false;
+    userID = this.id;
+    if (userID == "") {
+        callback(false);
     } else {
-        return true;
+        _dbConnect.userGet(userID, callback);
     }
 };
 
-AppUser.prototype.setUser = function (id, firstName, lastName) {
+AppUser.prototype.setUser = function (id, firstName, lastName, callback) {
+    var fileName = this.fileName;
     try {
         if (id.length < 4) {
             throw ("Invalid Employee Number")
@@ -64,8 +105,13 @@ AppUser.prototype.setUser = function (id, firstName, lastName) {
         this.id = id;
         this.fName = firstName;
         this.lName = lastName;
-        var content = id + ";" + firstName + ";" + lastName;
-        jetpack.write(this.fileName, content);
+        _dbConnect.userNew(id, firstName, lastName, function (result) {
+            if (result) {
+                var content = id + ";" + firstName + ";" + lastName;
+                jetpack.write(fileName, content);
+                callback(true);
+            }
+        });
     } catch (err) {
         Toast(err);
     }
