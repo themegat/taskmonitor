@@ -198,7 +198,6 @@ $('#btnNo').on("click", function () {
 
 $('#btnLogin').on("click", function () {
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
-<<<<<<< HEAD
     _user.setUser(id, fName, lName);
     // _waiter.add("user_new", function () {
     //     _appState.toggleCollapse();
@@ -210,14 +209,4 @@ $('#btnLogin').on("click", function () {
     //     _appState.toggleCollapse();
     //     startTaskLogging();
     // }
-=======
-    _user.setUser(id, fName, lName, function () {
-        _user.authenticate(function (result) {
-            if (result) {
-                _appState.toggleCollapse();
-                startTaskLogging();
-            }
-        });
-    });
->>>>>>> temp
 });
