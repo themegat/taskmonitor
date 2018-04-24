@@ -21298,3 +21298,6 @@ node_modules/bignumber.js/LICENCE
 node_modules/bignumber.js/README.md
 user.txt
 .gitignore
+docs/task_db.txt
+docs/App_Flow_Diagram.vsdx
+docs/Application Specification.docx

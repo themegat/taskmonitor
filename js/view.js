@@ -7,7 +7,8 @@ var appInitHieght = win.getSize()[1];
 
 //# Custom alert object
 var Toast = function (message) {
-    dialog.showErrorBox("Task Monitor", message);
+    alert(message);
+    // dialog.showErrorBox("Task Monitor", message);
 };
 
 /*  Date/Time object, initializes todays date and compares dates
@@ -20,6 +21,7 @@ var DateTime = function () {
     var dateNow = new Date();
     var month = dateNow.getMonth() + 1, year = dateNow.getFullYear(), day = dateNow.getDate();
     this.date = year + "-" + month + "-" + day;
+    this.appStartTime = null;
 };
 
 DateTime.prototype.getDate = function () {
@@ -35,6 +37,26 @@ DateTime.prototype.compare = function (date, dateCompareTo) {
     } else {
         return 0;
     }
+};
+
+DateTime.prototype.initAppStartTime = function () {
+    var timeNow = new Date();
+    var timeWorkStart = new Date();
+    timeWorkStart.setHours(8);
+    timeWorkStart.setMinutes(0);
+    timeWorkStart.setSeconds(0);
+    timeWorkStart.setMilliseconds(0);
+    if (this.compare(timeNow, timeWorkStart) == 1) {
+        this.appStartTime = timeWorkStart;
+    } else {
+        this.appStartTime = timeNow;
+    }
+};
+
+DateTime.prototype.convertForDB = function (date) {
+    return date.getFullYear() + "-" + (date.getMonth() + 1) + "-"
+        + date.getDate() + " " + date.getHours() + ":"
+        + date.getMinutes();
 };
 
 DateTime.prototype.isTimePast = function (stringTime) {
@@ -53,8 +75,8 @@ DateTime.prototype.isTimePast = function (stringTime) {
 
 $('#lo_TimePicker').calendar({ ampm: false, type: 'time' });
 $('#btnCloseApp').on("click", function () {
-    var content = "Task description;Task Time" + _taskLog.allDataToString();
-    _logFile.save(content);
+    // var content = "Task description;Task Time" + _taskLog.allDataToString();
+    // _logFile.save(content);
     win.close();
 });
 
@@ -108,7 +130,6 @@ LogFile.prototype.save = function (content) {
 };
 LogFile.prototype.open = function () {
     if (jetpack.exists(this.path) !== false) {
-        console.log('file');
         return jetpack.read(this.path);
     } else {
         return false;
@@ -129,7 +150,7 @@ var ResizeApp = function (size, funct) {
             if (startSize <= (endSize + resizeBy)) {
                 if (funct !== null && funct !== undefined) {
                     funct();
-                }                
+                }
                 clearInterval(resizeInterval);
                 win.setSize(win.getSize()[0], endSize);
             }

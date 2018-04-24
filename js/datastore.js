@@ -1,24 +1,5 @@
 var mySql = require('mysql');
 
-$(document).ready(function () {
-    var conn = mySql.createConnection({
-        host: "192.168.15.173",
-        user: "admin",
-        password: "Password1"
-    })
-
-    conn.connect(function (err) {
-        if (err) throw err;
-        console.log("Connected to mysql");
-        var query = "show databases";
-        conn.query(query, function (err, result) {
-            if (err) throw err;
-            console.log("Sql Result:\n");
-            console.log(result);
-        });
-    });
-});
-
 var AppUser = function () {
     this.id = "";
     this.fName = "";
@@ -45,10 +26,21 @@ AppUser.prototype.authenticate = function () {
     if (!this.isInit) {
         this.init();
     }
-    if (this.id == "") {
-        return false;
-    } else {
-        return true;
+    var userID = this.id;
+    try {
+        var query = "select * from user where id='" + userID + "'";
+        DBConnect.query(query, function (err, result) {
+            if (err) throw err;
+            if (userID == "" || result.length === 0) {
+                _waiter.call("user_auth", "");
+            } else if (userID === result[0].id) {
+                _waiter.call("user_auth", null, "");
+            } else {
+                _waiter.call("user_auth", "");
+            }
+        });
+    } catch (err) {
+        Toast(err);
     }
 };
 
@@ -65,9 +57,21 @@ AppUser.prototype.setUser = function (id, firstName, lastName) {
         this.fName = firstName;
         this.lName = lastName;
         var content = id + ";" + firstName + ";" + lastName;
-        jetpack.write(this.fileName, content);
+        var fileName = this.fileName;
+
+        var query = "insert into user values('" + id + "','" + firstName + "','" + lastName + "')";
+        DBConnect.query(query, function (err, result) {
+            if (err) {
+                if (String(err).indexOf("ER_DUP_ENTRY") === -1) {
+                    throw err;
+                }
+            }
+
+            jetpack.write(fileName, content);
+            _appState.toggleCollapse();
+            _user.authenticate();
+        });
     } catch (err) {
         Toast(err);
     }
-
 };

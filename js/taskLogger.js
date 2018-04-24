@@ -4,28 +4,27 @@
     Input - the input that is required from the user
     Action - The action that the user has to take
 */
-var TaskLogOperation = function (question, input, action) {
+var UIState = function (question, input, action) {
     this.question = question;
     this.input = input;
     this.action = action;
 };
 
 //List of steps and operations to be performed
-var TASK_FLOW_LIST = [];
-TASK_FLOW_LIST.push(new TaskLogOperation("What have you been up to?", "text", "next"));
-TASK_FLOW_LIST.push(new TaskLogOperation("Are you still performing this task", "display", "response"));
-TASK_FLOW_LIST.push(new TaskLogOperation("When did u finish the task?", "time", "next"));
-TASK_FLOW_LIST.push(new TaskLogOperation("You are not signed in. Sign in to continue.", "login", ""));
+const UI_FLOW = [];
+UI_FLOW.push(new UIState("What have you been up to?", "text", "next"));
+UI_FLOW.push(new UIState("Are you still performing this task", "display", "response"));
+UI_FLOW.push(new UIState("When did u finish the task?", "time", "next"));
+UI_FLOW.push(new UIState("You are not signed in. Sign in to continue.", "login", ""));
 
 /*
     Configure the user interface based on operation to be performed. 
     Changes the input types text/time selection
     Changes the user actions next/(yes/no) buttons
 */
-var TaskFlowUIConfig = function (operation) {
+var UIConfigure = function (operation) {
     $('.hideable').addClass("hidden");
     $('.hideable').hide();
-
     $("#txtQuestion").html(operation.question);
 
     switch (operation.input) {
@@ -63,8 +62,9 @@ var TaskFlowUIConfig = function (operation) {
 //current step/opeation in the logging procedure
 var TaskLogState = function () {
     this.currentTask = "";
+    this.startTime = "";
     this.operationIndex = 0;
-    TaskFlowUIConfig(TASK_FLOW_LIST[this.operationIndex])
+    UIConfigure(UI_FLOW[this.operationIndex])
 };
 
 /*
@@ -79,8 +79,23 @@ var TaskLog = function () {
     this.arTaskLog = [];
 };
 
-TaskLog.prototype.add = function (taskDescription, taskDate) {
-    this.arTaskLog.push({ description: taskDescription, time: taskDate });
+TaskLog.prototype.add = function (taskDescription, taskStart, taskEnd) {
+    var taskLog = this;
+    var tempStartDate = taskStart;
+    if(taskStart instanceof Date){
+       tempStartDate =  _dateTime.convertForDB(taskStart);
+    }
+    try {
+        var query = "insert into task values(0, '" + taskDescription + "','" + tempStartDate + "','" + taskEnd +
+            "','" + _user.id + "')";
+        DBConnect.query(query, function (err, result) {
+            if (err) throw err;
+            taskLog.arTaskLog.push({ description: taskDescription, timeStart: taskStart, timeEnd: taskEnd });
+            _waiter.call("goto_new_task", "", null);
+        })
+    } catch (err) {
+        Toast(err);
+    }
 };
 
 TaskLog.prototype.get = function (index) {
@@ -112,44 +127,53 @@ TaskLog.prototype.allDataToString = function () {
 
 //User action, button events for next button
 $('#btnNext').on("click", function () {
-    if (_tls.operationIndex == 0) {
-        _tls.currentTask = $('#txtTaskDetails').val();
-        if (_tls.currentTask == "" || _tls.currentTask.length < 5) {
-            Toast("Invalid task description");
-        } else {
-            $('#segTaskDetails').html(_tls.currentTask);
-            _tls.operationIndex = 1;
-            TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
-        }
-    } else if (_tls.operationIndex == 2) {
-        $('#txtTaskDetails').val("");
-        var strTime = $('#txtTime').val();
-        if (strTime == "") {
-            Toast("Select a time to continue");
-        } else {
-            var result = _dateTime.isTimePast(strTime);
-            if (parseInt(result) > 0) {
-                Toast("Invalid time selected. Cannot select a future value");
+    try {
+        if (_tls.operationIndex == 0) {
+            _tls.currentTask = $('#txtTaskDetails').val();
+            if (_tls.currentTask == "" || _tls.currentTask.length < 5) {
+                throw ("Invalid task description");
             } else {
-                if (_taskLog.getSize() <= 0) {
-                    _taskLog.add(_tls.currentTask, _dateTime.getDate() + " " + strTime);
-                    _tls.operationIndex = 0;
-                    TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
+                $('#segTaskDetails').html(_tls.currentTask);
+                _tls.operationIndex = 1;
+                UIConfigure(UI_FLOW[_tls.operationIndex]);
+            }
+        } else if (_tls.operationIndex == 2) {
+            $('#txtTaskDetails').val("");
+            var strTime = $('#txtTime').val();
+            if (strTime == "") {
+                throw ("Select a time to continue");
+            } else {
+                var result = _dateTime.isTimePast(strTime);
+                if (parseInt(result) > 0) {
+                    throw ("Invalid time selected. Cannot select a future value");
                 } else {
-                    var taskObj = _taskLog.getLast();
-                    if (taskObj !== null) {
-                        result = _dateTime.compare(_dateTime.getDate() + " " + strTime, taskObj.time);
-                        if (result <= 0) {
-                            Toast("invalid time selected.")
-                        } else {
-                            _taskLog.add(_tls.currentTask, _dateTime.getDate() + " " + strTime);
-                            _tls.operationIndex = 0;
-                            TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
+                    var taskTimeEnd = _dateTime.getDate() + " " + strTime;
+                    if (_taskLog.getSize() <= 0) {
+                        if (_dateTime.compare(taskTimeEnd, _dateTime.appStartTime) <= 0) {
+                            throw ("Invalid time selected.")
+                        }
+                        _taskLog.add(_tls.currentTask, _dateTime.appStartTime, taskTimeEnd);
+                        // _tls.operationIndex = 0;
+                        // UIConfigure(UI_FLOW[_tls.operationIndex]);
+                    } else {
+                        var taskObj = _taskLog.getLast();
+                        if (taskObj !== null) {
+                            // console.log(taskObj);
+                            result = _dateTime.compare(taskTimeEnd, taskObj.timeEnd);
+                            if (result <= 0) {
+                                throw ("invalid time selected.")
+                            } else {
+                                _taskLog.add(_tls.currentTask, taskObj.timeEnd, taskTimeEnd);
+                                // _tls.operationIndex = 0;
+                                // UIConfigure(UI_FLOW[_tls.operationIndex]);
+                            }
                         }
                     }
                 }
             }
         }
+    } catch (err) {
+        Toast(err);
     }
 });
 
@@ -160,7 +184,7 @@ $('#btnYes').on("click", function () {
         $('#txtQuestion').html("");
         _appState.toggleCollapse();
         setTimeout(function () {
-            TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
+            UIConfigure(UI_FLOW[_tls.operationIndex]);
             _appState.toggleCollapse();
         }, _timeDelay);
     }
@@ -168,15 +192,21 @@ $('#btnYes').on("click", function () {
 $('#btnNo').on("click", function () {
     if (_tls.operationIndex == 1) {
         _tls.operationIndex = 2;
-        TaskFlowUIConfig(TASK_FLOW_LIST[_tls.operationIndex]);
+        UIConfigure(UI_FLOW[_tls.operationIndex]);
     }
 });
 
 $('#btnLogin').on("click", function () {
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
     _user.setUser(id, fName, lName);
-    if (_user.authenticate()) {
-        _appState.toggleCollapse();
-        startTaskLogging();
-    }
+    // _waiter.add("user_new", function () {
+    //     _appState.toggleCollapse();
+    //     startTaskLogging();
+    // }, function () {
+
+    // });
+    // if (_user.authenticate()) {
+    //     _appState.toggleCollapse();
+    //     startTaskLogging();
+    // }
 });
