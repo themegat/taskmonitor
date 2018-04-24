@@ -1,0 +1,6 @@
+create table user (id varchar(4) Not Null, firstname varchar(20) Not NUll, 
+lastname varchar(20) Not Null, primary key(id));
+
+create table task (id int auto_increment Not Null, details varchar(100) Not Null, timestart datetime Not Null,
+timeend datetime Not Null, userid varchar(4) Not Null,
+primary key(id), foreign key(userid) references user(id));
