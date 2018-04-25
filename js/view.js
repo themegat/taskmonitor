@@ -22,6 +22,11 @@ var DateTime = function () {
     var month = dateNow.getMonth() + 1, year = dateNow.getFullYear(), day = dateNow.getDate();
     this.date = year + "-" + month + "-" + day;
     this.appStartTime = null;
+    this.timeWorkStart = new Date();
+    this.timeWorkStart.setHours(8);
+    this.timeWorkStart.setMinutes(0);
+    this.timeWorkStart.setSeconds(0);
+    this.timeWorkStart.setMilliseconds(0);
 };
 
 DateTime.prototype.getDate = function () {
@@ -41,11 +46,7 @@ DateTime.prototype.compare = function (date, dateCompareTo) {
 
 DateTime.prototype.initAppStartTime = function () {
     var timeNow = new Date();
-    var timeWorkStart = new Date();
-    timeWorkStart.setHours(8);
-    timeWorkStart.setMinutes(0);
-    timeWorkStart.setSeconds(0);
-    timeWorkStart.setMilliseconds(0);
+    var timeWorkStart = this.timeWorkStart;
     if (this.compare(timeNow, timeWorkStart) == 1) {
         this.appStartTime = timeWorkStart;
     } else {

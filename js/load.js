@@ -20,26 +20,13 @@ $(document).ready(function () {
     _logFile = new LogFile("C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt");
     //Initialize a new Task logging object and load data from file
     _taskLog = new TaskLog();
-
+    //Initialize a new Waiter object
     _waiter = new Waiter();
 
     $(".hideable").hide();
     $('#txtQuestion').html("");
-    // setTimeout(function () {
-    //     ResizeApp(450, function(){$('#lo_login').show();});
-    // }, 3000);
 
     _appState.toggleCollapse();
-    // var data = _logFile.open();
-    // if (data !== false) {
-    //     data = data.split("\n");
-    //     var task;
-    //     for (var i = 1; i < data.length; i++) {
-    //         task = data[i];
-    //         task = task.split(";");
-    //         _taskLog.add(task[0], task[1]);
-    //     }
-    // }
 
     DBConnect = mySql.createConnection({
         host: "192.168.15.173",
@@ -49,22 +36,22 @@ $(document).ready(function () {
     });
 
     _waiter.add("user_auth", function () {
-        // setTimeout(function () {
         UIConfigure(UI_FLOW[3]);
         _appState.toggleCollapse(430);
-        // }, 2000);
     }, function () {
-        startTaskLogging();
+        _taskLog.initFromDB();
     });
+
+    _waiter.add("start_logging", function(){
+        startTaskLogging();
+    }, function(){});
 
     _waiter.add("goto_new_task", function () {
         _tls.operationIndex = 0;
         UIConfigure(UI_FLOW[_tls.operationIndex]);
     }, function(){});
 
-    // setTimeout(function(){
     _user.authenticate();
-    // }, 5000);
 });
 
 var startTaskLogging = function () {
@@ -78,10 +65,14 @@ var Waiter = function () {
     this.list = [];
 };
 
+/*The waiter is used as a Promise providing callback mechanisims for MYSQL and other AJAX calls 
+add - to the waiter list by providing a name and the success and fail callbacks
+*/
 Waiter.prototype.add = function (functionName, onSuccessFunction, onFailFunction) {
     this.list.push({ name: functionName, onSuccess: onSuccessFunction, onFail: onFailFunction });
 };
-
+/* call - by providing the name of the success and fail callbacks, also provide the parameters to feed the 
+ the callbacks*/
 Waiter.prototype.call = function (functionName, onSuccessResult, onFailResult) {
     // onFailResult = onFailResult | null;
     for (let waitObj of this.list) {

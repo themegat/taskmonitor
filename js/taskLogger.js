@@ -79,19 +79,46 @@ var TaskLog = function () {
     this.arTaskLog = [];
 };
 
-TaskLog.prototype.add = function (taskDescription, taskStart, taskEnd) {
+TaskLog.prototype.addToDB = function (taskDescription, taskStart, taskEnd) {
     var taskLog = this;
     var tempStartDate = taskStart;
-    if(taskStart instanceof Date){
-       tempStartDate =  _dateTime.convertForDB(taskStart);
+    if (taskStart instanceof Date) {
+        tempStartDate = _dateTime.convertForDB(taskStart);
     }
     try {
         var query = "insert into task values(0, '" + taskDescription + "','" + tempStartDate + "','" + taskEnd +
             "','" + _user.id + "')";
         DBConnect.query(query, function (err, result) {
             if (err) throw err;
-            taskLog.arTaskLog.push({ description: taskDescription, timeStart: taskStart, timeEnd: taskEnd });
+            taskLog.addToList({ description: taskDescription, timeStart: taskStart, timeEnd: taskEnd });
             _waiter.call("goto_new_task", "", null);
+        })
+    } catch (err) {
+        Toast(err);
+    }
+};
+
+TaskLog.prototype.addToList = function (taskDescription, taskStart, taskEnd) {
+    this.arTaskLog.push({ description: taskDescription, timeStart: taskStart, timeEnd: taskEnd });
+};
+
+TaskLog.prototype.initFromDB = function () {
+    var taskLog = this;
+    try {
+        var query = "select * from task where userid='" + _user.id + "' order by id desc";
+        DBConnect.query(query, function (err, result) {
+            if (err) throw err;
+            if (result.length > 0) {
+                var datePreviousDay = new Date(result[0].timeend);
+                datePreviousDay.setHours(8);
+                datePreviousDay.setMinutes(0);
+                datePreviousDay.setSeconds(0);
+                datePreviousDay.setMilliseconds(0);
+                if (_dateTime.compare(datePreviousDay, _dateTime.timeWorkStart) > -1) {
+                    taskLog.addToList(result[0].details, result[0].timestart, result[0].timeend);
+                }
+            }
+            _waiter.call("start_logging", "", null);
         })
     } catch (err) {
         Toast(err);
@@ -152,7 +179,7 @@ $('#btnNext').on("click", function () {
                         if (_dateTime.compare(taskTimeEnd, _dateTime.appStartTime) <= 0) {
                             throw ("Invalid time selected.")
                         }
-                        _taskLog.add(_tls.currentTask, _dateTime.appStartTime, taskTimeEnd);
+                        _taskLog.addToDB(_tls.currentTask, _dateTime.appStartTime, taskTimeEnd);
                         // _tls.operationIndex = 0;
                         // UIConfigure(UI_FLOW[_tls.operationIndex]);
                     } else {
@@ -163,7 +190,7 @@ $('#btnNext').on("click", function () {
                             if (result <= 0) {
                                 throw ("invalid time selected.")
                             } else {
-                                _taskLog.add(_tls.currentTask, taskObj.timeEnd, taskTimeEnd);
+                                _taskLog.addToDB(_tls.currentTask, taskObj.timeEnd, taskTimeEnd);
                                 // _tls.operationIndex = 0;
                                 // UIConfigure(UI_FLOW[_tls.operationIndex]);
                             }
