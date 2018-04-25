@@ -6,20 +6,21 @@
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/semantic.min.css" />
     <link rel="stylesheet" href="css/calendar.min.css" />
+    <link rel="import" href="html/modules.html" />
 </head>
 
 <body>
     <!-- Entire app display in a single grid -->
     <div class="ui grid">
+        <!-- Containter where the content of the modules html file will be loaded -->
+        <div w3-include-html="html/modules.html"></div>
+
         <!-- Title/Menu/Header of the app -->
         <div id="rowTitle" class="row">
             <div class="sixteen wide column blue">
                 <button id="btnCloseApp" class="ui icon button ad_margin">
                     <i class="power off icon"></i>
                 </button>
-                <!-- <button id="btnResizeApp" class="ui icon button ad_margin">
-                    <i id="btnResizeApp_icon" class="chevron up icon"></i>
-                </button> -->
             </div>
         </div>>
         <!-- Body of the app (is collapsable) -->
@@ -107,5 +108,7 @@
 
 <!-- <script src="js/calendar.min.js" onload="window.$ = window.jQuery = module.exports;"></script> -->
 <script src="js/view.js"></script>
-
+<script>
+    includeHTML();
+</script>
 </html>

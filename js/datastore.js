@@ -75,3 +75,31 @@ AppUser.prototype.setUser = function (id, firstName, lastName) {
         Toast(err);
     }
 };
+
+
+/*
+    Object that performs the following log file operations
+    -Read a file (checks if files exists)
+    -Write to a a file
+    -Append to a file (checks if files exists)
+*/
+
+var LogFile = function (path) {
+    this.path = path || "C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt";
+};
+LogFile.prototype.save = function (content) {
+    var path = this.path;
+    jetpack.write(path, content);
+};
+LogFile.prototype.open = function () {
+    if (jetpack.exists(this.path) !== false) {
+        return jetpack.read(this.path);
+    } else {
+        return false;
+    }
+};
+LogFile.prototype.append = function (content) {
+    if (jetpack.exists(this.path) !== false) {
+        jetpack.append(this.path, content);
+    }
+};

@@ -42,14 +42,14 @@ $(document).ready(function () {
         _taskLog.initFromDB();
     });
 
-    _waiter.add("start_logging", function(){
+    _waiter.add("start_logging", function () {
         startTaskLogging();
-    }, function(){});
+    }, function () { });
 
     _waiter.add("goto_new_task", function () {
         _tls.operationIndex = 0;
         UIConfigure(UI_FLOW[_tls.operationIndex]);
-    }, function(){});
+    }, function () { });
 
     _user.authenticate();
 });

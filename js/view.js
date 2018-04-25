@@ -6,9 +6,15 @@ var win = remote.getCurrentWindow();
 var appInitHieght = win.getSize()[1];
 
 //# Custom alert object
-var Toast = function (message) {
-    alert(message);
-    // dialog.showErrorBox("Task Monitor", message);
+var Toast = function (message, title) {
+    if(title == "" || title == undefined){
+        title = "Oops";
+    }
+    $("#txtMsgTitle").html(title);
+    $("#txtMsgContent").html(message);
+    if (message) {
+        $('.ui.basic.modal').modal('show');
+    }
 };
 
 /*  Date/Time object, initializes todays date and compares dates
@@ -114,34 +120,6 @@ AppViewState.prototype.toggleCollapse = function (size) {
 // $('#btnResizeApp').on("click", function () {
 // });
 
-
-/*
-    Object that performs the following log file operations
-    -Read a file (checks if files exists)
-    -Write to a a file
-    -Append to a file (checks if files exists)
-*/
-
-var LogFile = function (path) {
-    this.path = path || "C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt";
-};
-LogFile.prototype.save = function (content) {
-    var path = this.path;
-    jetpack.write(path, content);
-};
-LogFile.prototype.open = function () {
-    if (jetpack.exists(this.path) !== false) {
-        return jetpack.read(this.path);
-    } else {
-        return false;
-    }
-};
-LogFile.prototype.append = function (content) {
-    if (jetpack.exists(this.path) !== false) {
-        jetpack.append(this.path, content);
-    }
-};
-
 var ResizeApp = function (size, funct) {
     var startSize = win.getSize()[1];
     var endSize = size | 20;
@@ -170,5 +148,33 @@ var ResizeApp = function (size, funct) {
             startSize = startSize + resizeBy;
             win.setSize(win.getSize()[0], startSize);
         }, 10);
+    }
+};
+
+var includeHTML = function () {
+    var z, i, elmnt, file, xhttp;
+    /*loop through a collection of all HTML elements:*/
+    z = document.getElementsByTagName("*");
+    for (i = 0; i < z.length; i++) {
+        elmnt = z[i];
+        /*search for elements with a certain atrribute:*/
+        file = elmnt.getAttribute("w3-include-html");
+        if (file) {
+            /*make an HTTP request using the attribute value as the file name:*/
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4) {
+                    if (this.status == 200) { elmnt.innerHTML = this.responseText; }
+                    if (this.status == 404) { elmnt.innerHTML = "Page not found."; }
+                    /*remove the attribute, and call this function once more:*/
+                    elmnt.removeAttribute("w3-include-html");
+                    includeHTML();
+                }
+            }
+            xhttp.open("GET", file, true);
+            xhttp.send();
+            /*exit the function:*/
+            return;
+        }
     }
 };
