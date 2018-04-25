@@ -81,44 +81,30 @@ DateTime.prototype.isTimePast = function (stringTime) {
 };
 
 $('#lo_TimePicker').calendar({ ampm: false, type: 'time' });
-$('#btnCloseApp').on("click", function () {
-    // var content = "Task description;Task Time" + _taskLog.allDataToString();
-    // _logFile.save(content);
-    win.close();
-});
 
 //Control the view state of the application (collapse view)
-
 var AppViewState = function () {
     this.isAppCollapsed = false;
 };
 
 AppViewState.prototype.toggleCollapse = function (size) {
+    console.log(win.getSize());
     size = size | 410;
     if (!this.isAppCollapsed) {
         $('#rowBody').hide();
-        // $('body').css('overflow-y', 'hidden');
         $("#btnResizeApp_icon").removeClass("up");
         $('#btnResizeApp_icon').addClass("down");
-        ResizeApp(50, null);
-        // win.setSize(win.getSize()[0], 50);
-        win.setOpacity(0.5);
+        ResizeApp(20, null);
+        win.setOpacity(0.4);
         this.isAppCollapsed = true;
     } else {
-        // $('#rowBody').show();
-        // $('body').css('overflow-y', 'auto');
         $("#btnResizeApp_icon").removeClass("down");
         $('#btnResizeApp_icon').addClass("up");
         ResizeApp(size, function () { $('#rowBody').show() });
-        // win.setSize(win.getSize()[0], appInitHieght);
-        win.setOpacity(0.9);
+        win.setOpacity(1);
         this.isAppCollapsed = false;
     }
 };
-
-// var ind = 0;
-// $('#btnResizeApp').on("click", function () {
-// });
 
 var ResizeApp = function (size, funct) {
     var startSize = win.getSize()[1];

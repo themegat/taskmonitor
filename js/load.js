@@ -1,9 +1,9 @@
-var _dateTime, _appState, _logFile, _taskLog;
-//tls - Task log state
+var _dateTime, _appState, _taskLog;
+//tls -> Task log state
 var _tls;
 //The delay task logging operations
-// var _timeDelay = 900000, _timeDelayAppStart = 300000;
-var _timeDelay = 10000, _timeDelayAppStart = 5000;
+var _timeDelay = 600000, _timeDelayAppStart = 5000;
+// var _timeDelay = 10000, _timeDelayAppStart = 5000;
 var _user;
 var _waiter;
 var DBConnect;
@@ -16,8 +16,6 @@ $(document).ready(function () {
     _dateTime.initAppStartTime();
     //Initialize a new App state object
     _appState = new AppViewState();
-    //Initialize a new Log file object
-    _logFile = new LogFile("C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt");
     //Initialize a new Task logging object and load data from file
     _taskLog = new TaskLog();
     //Initialize a new Waiter object
@@ -74,7 +72,6 @@ Waiter.prototype.add = function (functionName, onSuccessFunction, onFailFunction
 /* call - by providing the name of the success and fail callbacks, also provide the parameters to feed the 
  the callbacks*/
 Waiter.prototype.call = function (functionName, onSuccessResult, onFailResult) {
-    // onFailResult = onFailResult | null;
     for (let waitObj of this.list) {
         if (waitObj.name === functionName) {
             if (onFailResult == null || onFailResult == undefined) {

@@ -26,15 +26,17 @@ AppUser.prototype.authenticate = function () {
     if (!this.isInit) {
         this.init();
     }
-    var userID = this.id;
+    var user = this;
     try {
-        var query = "select * from user where id='" + userID + "'";
+        var query = "select * from user where id='" + user.id + "'";
         DBConnect.query(query, function (err, result) {
             if (err) throw err;
-            if (userID == "" || result.length === 0) {
+            if (user.id == "" || result.length === 0) {
                 _waiter.call("user_auth", "");
-            } else if (userID === result[0].id) {
+            } else if (user.id === result[0].id) {
                 _waiter.call("user_auth", null, "");
+                console.log(user.fName);
+                $("#txtUserName").html(String(user.fName).substring(0, 1) + "." + user.lName);
             } else {
                 _waiter.call("user_auth", "");
             }
@@ -73,33 +75,5 @@ AppUser.prototype.setUser = function (id, firstName, lastName) {
         });
     } catch (err) {
         Toast(err);
-    }
-};
-
-
-/*
-    Object that performs the following log file operations
-    -Read a file (checks if files exists)
-    -Write to a a file
-    -Append to a file (checks if files exists)
-*/
-
-var LogFile = function (path) {
-    this.path = path || "C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/logData.txt";
-};
-LogFile.prototype.save = function (content) {
-    var path = this.path;
-    jetpack.write(path, content);
-};
-LogFile.prototype.open = function () {
-    if (jetpack.exists(this.path) !== false) {
-        return jetpack.read(this.path);
-    } else {
-        return false;
-    }
-};
-LogFile.prototype.append = function (content) {
-    if (jetpack.exists(this.path) !== false) {
-        jetpack.append(this.path, content);
     }
 };

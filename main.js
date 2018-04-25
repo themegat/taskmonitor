@@ -4,11 +4,13 @@ const path = require('path');
 const url = require('url');
 
 function createWindow(){
-    var appWidth = 325, appHeight = 50;
+    //Note size in view.js - AppViewState.prototype.toggleCollapse()
+    var appWidth = 325, appHeight = 20;
     var screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
+    var xPos = screenWidth - appWidth;
     let win = new BrowserWindow({
         width: appWidth, height: appHeight, 
-        x: (screenWidth - appWidth), y: 40, minimizable: false, maximizable: false,
+        x: xPos, y: 100, minimizable: false, maximizable: false,
         alwaysOnTop: true,
         frame: false,
         resizable: false,

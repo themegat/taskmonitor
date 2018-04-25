@@ -16,13 +16,15 @@
         <div w3-include-html="html/modules.html"></div>
 
         <!-- Title/Menu/Header of the app -->
-        <div id="rowTitle" class="row">
-            <div class="sixteen wide column blue">
-                <button id="btnCloseApp" class="ui icon button ad_margin">
-                    <i class="power off icon"></i>
-                </button>
+        <div id="rowTitle" class="row blue">
+            <div class="two wide column blue"></div>
+            <div id="appHead" class="twelve wide column ">
+                <h4>
+                    <i class="user icon"></i>
+                    <label id=txtUserName></label>
+                </h4>
             </div>
-        </div>>
+        </div>
         <!-- Body of the app (is collapsable) -->
         <div id="rowBody" class="row">
             <div class="one wide column"></div>
@@ -111,4 +113,5 @@
 <script>
     includeHTML();
 </script>
+
 </html>

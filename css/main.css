@@ -17,3 +17,11 @@ body{
 .hidden{
     display: none;
 }
+
+#appHead{
+    margin-top: 10px;
+}
+
+#rowBody{
+    margin-top: 25px;
+}
