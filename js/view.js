@@ -1,4 +1,3 @@
-
 const remote = require('electron').remote;
 const { dialog } = require('electron').remote;
 const jetpack = require('fs-jetpack');
@@ -88,7 +87,6 @@ var AppViewState = function () {
 };
 
 AppViewState.prototype.toggleCollapse = function (size) {
-    console.log(win.getSize());
     size = size | 410;
     if (!this.isAppCollapsed) {
         $('#rowBody').hide();
@@ -103,6 +101,7 @@ AppViewState.prototype.toggleCollapse = function (size) {
         ResizeApp(size, function () { $('#rowBody').show() });
         win.setOpacity(1);
         this.isAppCollapsed = false;
+        app.focus();
     }
 };
 

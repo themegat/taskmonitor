@@ -90,7 +90,7 @@ TaskLog.prototype.addToDB = function (taskDescription, taskStart, taskEnd) {
             "','" + _user.id + "')";
         DBConnect.query(query, function (err, result) {
             if (err) throw err;
-            taskLog.addToList({ description: taskDescription, timeStart: taskStart, timeEnd: taskEnd });
+            taskLog.addToList( taskDescription, taskStart, taskEnd);
             _waiter.call("goto_new_task", "", null);
         })
     } catch (err) {
@@ -177,6 +177,7 @@ $('#btnNext').on("click", function () {
                     var taskTimeEnd = _dateTime.getDate() + " " + strTime;
                     if (_taskLog.getSize() <= 0) {
                         if (_dateTime.compare(taskTimeEnd, _dateTime.appStartTime) <= 0) {
+                            console.log("22");
                             throw ("Invalid time selected.")
                         }
                         _taskLog.addToDB(_tls.currentTask, _dateTime.appStartTime, taskTimeEnd);
@@ -185,9 +186,13 @@ $('#btnNext').on("click", function () {
                     } else {
                         var taskObj = _taskLog.getLast();
                         if (taskObj !== null) {
-                            // console.log(taskObj);
                             result = _dateTime.compare(taskTimeEnd, taskObj.timeEnd);
+                            console.log(result);
                             if (result <= 0) {
+                                console.log("23");
+                                console.log(taskTimeEnd);
+                                console.log(taskObj.timeEnd);
+                                console.log(taskObj);
                                 throw ("invalid time selected.")
                             } else {
                                 _taskLog.addToDB(_tls.currentTask, taskObj.timeEnd, taskTimeEnd);

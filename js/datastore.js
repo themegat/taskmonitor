@@ -4,7 +4,7 @@ var AppUser = function () {
     this.id = "";
     this.fName = "";
     this.lName = "";
-    this.fileName = "C:/Users/MCSD-5/Documents/T_Mot/Electron Projects/TaskMonitor/user.txt";
+    this.fileName = app.getAppPath() + "/user.txt";
     this.isInit = false;
 };
 
@@ -35,7 +35,6 @@ AppUser.prototype.authenticate = function () {
                 _waiter.call("user_auth", "");
             } else if (user.id === result[0].id) {
                 _waiter.call("user_auth", null, "");
-                console.log(user.fName);
                 $("#txtUserName").html(String(user.fName).substring(0, 1) + "." + user.lName);
             } else {
                 _waiter.call("user_auth", "");

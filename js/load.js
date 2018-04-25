@@ -1,3 +1,4 @@
+const app = require('electron').remote.app
 var _dateTime, _appState, _taskLog;
 //tls -> Task log state
 var _tls;
