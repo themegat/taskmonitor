@@ -5,7 +5,7 @@ var appInitHieght = win.getSize()[1];
 
 //# Custom alert object
 var Toast = function (message, title) {
-    if(title == "" || title == undefined){
+    if (title == "" || title == undefined) {
         title = "Oops";
     }
     $("#txtMsgTitle").html(title);
@@ -87,24 +87,55 @@ var AppViewState = function () {
 
 AppViewState.prototype.toggleCollapse = function (size) {
     size = size | 410;
+    console.log();
     if (!this.isAppCollapsed) {
         $('#rowBody').hide();
         $("#btnResizeApp_icon").removeClass("up");
         $('#btnResizeApp_icon').addClass("down");
-        ResizeApp(20, null);
+        appResizer.resizeY(20, null);
+        appResizer.slideX(40);
         win.setOpacity(0.4);
         this.isAppCollapsed = true;
     } else {
         $("#btnResizeApp_icon").removeClass("down");
         $('#btnResizeApp_icon').addClass("up");
-        ResizeApp(size, function () { $('#rowBody').show() });
+        appResizer.resizeY(size, function () { $('#rowBody').show() });
+        appResizer.slideX(325);
         win.setOpacity(1);
         this.isAppCollapsed = false;
         app.focus();
     }
 };
 
-var ResizeApp = function (size, funct) {
+var ResizeApp = function () {
+
+};
+
+ResizeApp.prototype.slideX = function (size) {
+    var endPos = _screenWidth - size;
+    var initPos = win.getPosition()[0];
+    var moveInterval;
+    var increament = 10;
+    if (endPos < initPos) {
+        moveInterval = setInterval(function () {
+            win.setPosition(initPos - increament, win.getPosition()[1]);
+            increament = increament + 10;
+            if (win.getPosition()[0] < (endPos + 10)) {
+                clearInterval(moveInterval);
+            }
+        }, 10);
+    } else {
+        moveInterval = setInterval(function () {
+            win.setPosition(initPos + increament, win.getPosition()[1]);
+            increament = increament + 10;
+            if (win.getPosition()[0] > (endPos - 10)) {
+                clearInterval(moveInterval);
+            }
+        }, 10);
+    }
+};
+
+ResizeApp.prototype.resizeY = function (size, funct) {
     var startSize = win.getSize()[1];
     var endSize = size | 20;
     var resizeBy = 10;
@@ -134,6 +165,8 @@ var ResizeApp = function (size, funct) {
         }, 10);
     }
 };
+
+var appResizer = new ResizeApp();
 
 var includeHTML = function () {
     var z, i, elmnt, file, xhttp;

@@ -5,7 +5,7 @@ const url = require('url');
 
 function createWindow(){
     //Note size in view.js - AppViewState.prototype.toggleCollapse()
-    var appWidth = 825, appHeight = 20;
+    var appWidth = 325, appHeight = 20;
     var screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
     var xPos = screenWidth - appWidth;
     let win = new BrowserWindow({
