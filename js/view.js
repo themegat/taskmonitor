@@ -87,20 +87,22 @@ var AppViewState = function () {
 
 AppViewState.prototype.toggleCollapse = function (size) {
     size = size | 410;
-    console.log();
     if (!this.isAppCollapsed) {
         $('#rowBody').hide();
         $("#btnResizeApp_icon").removeClass("up");
         $('#btnResizeApp_icon').addClass("down");
-        appResizer.resizeY(20, null);
-        appResizer.slideX(40);
+        appResizer.resizeY(35, null);
+        appResizer.slideX(50, function () {
+            $('#btnMaximizeApp').show();
+        });
         win.setOpacity(0.4);
         this.isAppCollapsed = true;
     } else {
         $("#btnResizeApp_icon").removeClass("down");
         $('#btnResizeApp_icon').addClass("up");
         appResizer.resizeY(size, function () { $('#rowBody').show() });
-        appResizer.slideX(325);
+        $('#btnMaximizeApp').hide();
+        appResizer.slideX(325, null);
         win.setOpacity(1);
         this.isAppCollapsed = false;
         app.focus();
@@ -111,7 +113,7 @@ var ResizeApp = function () {
 
 };
 
-ResizeApp.prototype.slideX = function (size) {
+ResizeApp.prototype.slideX = function (size, funct) {
     var endPos = _screenWidth - size;
     var initPos = win.getPosition()[0];
     var moveInterval;
@@ -122,6 +124,9 @@ ResizeApp.prototype.slideX = function (size) {
             increament = increament + 10;
             if (win.getPosition()[0] < (endPos + 10)) {
                 clearInterval(moveInterval);
+                if (funct !== null && funct !== undefined) {
+                    funct();
+                }
             }
         }, 10);
     } else {
@@ -130,6 +135,9 @@ ResizeApp.prototype.slideX = function (size) {
             increament = increament + 10;
             if (win.getPosition()[0] > (endPos - 10)) {
                 clearInterval(moveInterval);
+                if (funct !== null && funct !== undefined) {
+                    funct();
+                }
             }
         }, 10);
     }

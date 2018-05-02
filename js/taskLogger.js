@@ -4,6 +4,7 @@
     Input - the input that is required from the user
     Action - The action that the user has to take
 */
+var _logTimeOut;
 var UIState = function (question, input, action) {
     this.question = question;
     this.input = input;
@@ -211,7 +212,7 @@ $('#btnYes').on("click", function () {
         $(".hideable").hide();
         $('#txtQuestion').html("");
         _appState.toggleCollapse();
-        setTimeout(function () {
+        _logTimeOut = setTimeout(function () {
             UIConfigure(UI_FLOW[_tls.operationIndex]);
             _appState.toggleCollapse();
         }, _timeDelay);
@@ -227,4 +228,12 @@ $('#btnNo').on("click", function () {
 $('#btnLogin').on("click", function () {
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
     _user.setUser(id, fName, lName);
+});
+
+$("#btnMaximizeApp").on("click", function () {
+    if (_logTimeOut !== null & _logTimeOut !== undefined) {
+        clearTimeout(_logTimeOut);
+        UIConfigure(UI_FLOW[_tls.operationIndex]);
+        _appState.toggleCollapse();
+    }
 });

@@ -5,13 +5,14 @@ var _dateTime, _appState, _taskLog;
 var _tls;
 //The delay task logging operations
 // var _timeDelay = 600000, _timeDelayAppStart = 5000;
-var _timeDelay = 10000, _timeDelayAppStart = 5000;
+var _timeDelay = 10000, _timeDelayAppStart = 1000;
 var _user;
 var _waiter;
 var DBConnect;
 var _screenWidth;
 
 $(document).ready(function () {
+    $('#btnMaximizeApp').hide();
     _screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
     //Initialize a new App user object
     _user = new AppUser();
