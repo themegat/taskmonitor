@@ -4,22 +4,14 @@ var AppUser = function () {
     this.id = "";
     this.fName = "";
     this.lName = "";
-    this.fileName = app.getAppPath() + "/user.txt";
     this.isInit = false;
 };
 
 AppUser.prototype.init = function () {
-    var data;
-    if (jetpack.exists(this.fileName) !== false) {
-        data = jetpack.read(this.fileName);
-        if (data !== "") {
-            data = data.split(";");
-            this.id = data[0];
-            this.fName = data[1];
-            this.lName = data[2];
-            this.isInit = true;
-        }
-    }
+    this.id = localStorage.getItem("user_id");
+    this.fName = localStorage.getItem("user_fname");
+    this.lName = localStorage.getItem("user_lname");
+    this.isInit = true;
 };
 
 AppUser.prototype.authenticate = function () {
@@ -57,8 +49,6 @@ AppUser.prototype.setUser = function (id, firstName, lastName) {
         this.id = id;
         this.fName = firstName;
         this.lName = lastName;
-        var content = id + ";" + firstName + ";" + lastName;
-        var fileName = this.fileName;
 
         var query = "insert into user values('" + id + "','" + firstName + "','" + lastName + "')";
         DBConnect.query(query, function (err, result) {
@@ -67,8 +57,9 @@ AppUser.prototype.setUser = function (id, firstName, lastName) {
                     throw err;
                 }
             }
-
-            jetpack.write(fileName, content);
+            localStorage.setItem("user_id", id);
+            localStorage.setItem("user_fname", firstName);
+            localStorage.setItem("user_lname", lastName);
             _appState.toggleCollapse();
             _user.authenticate();
         });

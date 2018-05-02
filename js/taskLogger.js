@@ -90,7 +90,7 @@ TaskLog.prototype.addToDB = function (taskDescription, taskStart, taskEnd) {
             "','" + _user.id + "')";
         DBConnect.query(query, function (err, result) {
             if (err) throw err;
-            taskLog.addToList( taskDescription, taskStart, taskEnd);
+            taskLog.addToList(taskDescription, taskStart, taskEnd);
             _waiter.call("goto_new_task", "", null);
         })
     } catch (err) {
@@ -181,8 +181,6 @@ $('#btnNext').on("click", function () {
                             throw ("Invalid time selected.")
                         }
                         _taskLog.addToDB(_tls.currentTask, _dateTime.appStartTime, taskTimeEnd);
-                        // _tls.operationIndex = 0;
-                        // UIConfigure(UI_FLOW[_tls.operationIndex]);
                     } else {
                         var taskObj = _taskLog.getLast();
                         if (taskObj !== null) {
@@ -196,8 +194,6 @@ $('#btnNext').on("click", function () {
                                 throw ("invalid time selected.")
                             } else {
                                 _taskLog.addToDB(_tls.currentTask, taskObj.timeEnd, taskTimeEnd);
-                                // _tls.operationIndex = 0;
-                                // UIConfigure(UI_FLOW[_tls.operationIndex]);
                             }
                         }
                     }
@@ -231,14 +227,4 @@ $('#btnNo').on("click", function () {
 $('#btnLogin').on("click", function () {
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
     _user.setUser(id, fName, lName);
-    // _waiter.add("user_new", function () {
-    //     _appState.toggleCollapse();
-    //     startTaskLogging();
-    // }, function () {
-
-    // });
-    // if (_user.authenticate()) {
-    //     _appState.toggleCollapse();
-    //     startTaskLogging();
-    // }
 });

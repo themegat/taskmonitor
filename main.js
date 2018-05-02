@@ -5,18 +5,19 @@ const url = require('url');
 
 function createWindow(){
     //Note size in view.js - AppViewState.prototype.toggleCollapse()
-    var appWidth = 525, appHeight = 20;
+    var appWidth = 825, appHeight = 20;
     var screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
     var xPos = screenWidth - appWidth;
     let win = new BrowserWindow({
         width: appWidth, height: appHeight, 
         x: xPos, y: 100, minimizable: false, maximizable: false,
-        alwaysOnTop: true,
+        alwaysOnTop: true,          
         frame: false,
         resizable: false,
         movable: false,
         skipTaskbar: true,
-        opacity: 0.9})
+        opacity: 0.9,
+        icon: app.getAppPath() + "/img/Pin.ico"})
     win.loadURL(url.format({
         pathname: path.join(__dirname, 'index.html'),
         protocol: 'file:',

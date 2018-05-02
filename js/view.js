@@ -1,6 +1,5 @@
 const remote = require('electron').remote;
 const { dialog } = require('electron').remote;
-const jetpack = require('fs-jetpack');
 var win = remote.getCurrentWindow();
 var appInitHieght = win.getSize()[1];
 

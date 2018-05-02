@@ -3,8 +3,8 @@ var _dateTime, _appState, _taskLog;
 //tls -> Task log state
 var _tls;
 //The delay task logging operations
-var _timeDelay = 600000, _timeDelayAppStart = 5000;
-// var _timeDelay = 10000, _timeDelayAppStart = 5000;
+// var _timeDelay = 600000, _timeDelayAppStart = 5000;
+var _timeDelay = 10000, _timeDelayAppStart = 5000;
 var _user;
 var _waiter;
 var DBConnect;
