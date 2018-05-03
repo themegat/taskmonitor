@@ -18,6 +18,7 @@
     "mysql": "^2.15.0"
   },
   "build": {
-    "appId": "com.t.motsoeneng.task_monitor"
+    "appId": "com.t.motsoeneng.task_monitor",
+    "win":{"icon": "img/Pin.ico"}
   }
 }

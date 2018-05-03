@@ -1,5 +1,7 @@
 const electron = require('electron');
-const app = require('electron').remote.app
+const _app = require('electron').remote.app
+const remote = require('electron').remote;
+var _win = remote.getCurrentWindow();
 var _dateTime, _appState, _taskLog;
 //tls -> Task log state
 var _tls;
@@ -13,14 +15,15 @@ var _screenWidth;
 
 $(document).ready(function () {
     $('#btnMaximizeApp').hide();
+    $('#appHead').hide();
     _screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
     //Initialize a new App user object
     _user = new AppUser();
     //Initialize a new date time object
     _dateTime = new DateTime();
     _dateTime.initAppStartTime();
-    //Initialize a new App state object
-    _appState = new AppViewState();
+    //Initialize a new App state objects
+       _appState = new AppViewState();
     //Initialize a new Task logging object and load data from file
     _taskLog = new TaskLog();
     //Initialize a new Waiter object
@@ -47,6 +50,7 @@ $(document).ready(function () {
 
     _waiter.add("start_logging", function () {
         startTaskLogging();
+        $('#appHead').show();
     }, function () { });
 
     _waiter.add("goto_new_task", function () {

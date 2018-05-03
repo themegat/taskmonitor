@@ -1,5 +1,6 @@
 body{
     overflow: hidden;
+    /* background: green !important; */
 }
 
 .ad_pad{
@@ -20,6 +21,10 @@ body{
 
 #appHead{
     margin-top: 10px;
+}
+
+#rowTitle{
+    height: 60px !important;
 }
 
 #rowBody{

@@ -1,7 +1,7 @@
-const remote = require('electron').remote;
+// const remote = require('electron').remote;
+// var win = remote.getCurrentWindow();
 const { dialog } = require('electron').remote;
-var win = remote.getCurrentWindow();
-var appInitHieght = win.getSize()[1];
+var appInitHieght = _win.getSize()[1];
 
 //# Custom alert object
 var Toast = function (message, title) {
@@ -89,23 +89,25 @@ AppViewState.prototype.toggleCollapse = function (size) {
     size = size | 410;
     if (!this.isAppCollapsed) {
         $('#rowBody').hide();
+        $('body').css("background", "#2185d0");
         $("#btnResizeApp_icon").removeClass("up");
         $('#btnResizeApp_icon').addClass("down");
-        appResizer.resizeY(35, null);
+        appResizer.resizeY(31, null);
         appResizer.slideX(50, function () {
             $('#btnMaximizeApp').show();
         });
-        win.setOpacity(0.4);
+        _win.setOpacity(0.4);
         this.isAppCollapsed = true;
     } else {
+        $('body').css("background", "white");
         $("#btnResizeApp_icon").removeClass("down");
         $('#btnResizeApp_icon').addClass("up");
         appResizer.resizeY(size, function () { $('#rowBody').show() });
         $('#btnMaximizeApp').hide();
         appResizer.slideX(325, null);
-        win.setOpacity(1);
+        _win.setOpacity(1);
         this.isAppCollapsed = false;
-        app.focus();
+        _app.focus();
     }
 };
 
@@ -115,14 +117,14 @@ var ResizeApp = function () {
 
 ResizeApp.prototype.slideX = function (size, funct) {
     var endPos = _screenWidth - size;
-    var initPos = win.getPosition()[0];
+    var initPos = _win.getPosition()[0];
     var moveInterval;
     var increament = 10;
     if (endPos < initPos) {
         moveInterval = setInterval(function () {
-            win.setPosition(initPos - increament, win.getPosition()[1]);
+            _win.setPosition(initPos - increament, _win.getPosition()[1]);
             increament = increament + 10;
-            if (win.getPosition()[0] < (endPos + 10)) {
+            if (_win.getPosition()[0] < (endPos + 10)) {
                 clearInterval(moveInterval);
                 if (funct !== null && funct !== undefined) {
                     funct();
@@ -131,9 +133,9 @@ ResizeApp.prototype.slideX = function (size, funct) {
         }, 10);
     } else {
         moveInterval = setInterval(function () {
-            win.setPosition(initPos + increament, win.getPosition()[1]);
+            _win.setPosition(initPos + increament, _win.getPosition()[1]);
             increament = increament + 10;
-            if (win.getPosition()[0] > (endPos - 10)) {
+            if (_win.getPosition()[0] > (endPos - 10)) {
                 clearInterval(moveInterval);
                 if (funct !== null && funct !== undefined) {
                     funct();
@@ -144,7 +146,7 @@ ResizeApp.prototype.slideX = function (size, funct) {
 };
 
 ResizeApp.prototype.resizeY = function (size, funct) {
-    var startSize = win.getSize()[1];
+    var startSize = _win.getSize()[1];
     var endSize = size | 20;
     var resizeBy = 10;
     if (endSize < startSize) {
@@ -154,10 +156,10 @@ ResizeApp.prototype.resizeY = function (size, funct) {
                     funct();
                 }
                 clearInterval(resizeInterval);
-                win.setSize(win.getSize()[0], endSize);
+                _win.setSize(_win.getSize()[0], endSize);
             }
             startSize = startSize - resizeBy;
-            win.setSize(win.getSize()[0], startSize);
+            _win.setSize(_win.getSize()[0], startSize);
         }, 10);
     } else {
         var resizeInterval = setInterval(function () {
@@ -166,10 +168,10 @@ ResizeApp.prototype.resizeY = function (size, funct) {
                     funct();
                 }
                 clearInterval(resizeInterval);
-                win.setSize(win.getSize()[0], endSize);
+                _win.setSize(_win.getSize()[0], endSize);
             }
             startSize = startSize + resizeBy;
-            win.setSize(win.getSize()[0], startSize);
+            _win.setSize(_win.getSize()[0], startSize);
         }, 10);
     }
 };
