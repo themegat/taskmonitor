@@ -50,12 +50,12 @@ DateTime.prototype.compare = function (date, dateCompareTo) {
 
 DateTime.prototype.initAppStartTime = function () {
     var timeNow = new Date();
-    var timeWorkStart = this.timeWorkStart;
-    if (this.compare(timeNow, timeWorkStart) == 1) {
-        this.appStartTime = timeWorkStart;
-    } else {
-        this.appStartTime = timeNow;
-    }
+    // var timeWorkStart = this.timeWorkStart;
+    // if (this.compare(timeNow, timeWorkStart) == 1) {
+    this.appStartTime = timeNow;
+    // } else {
+    //     this.appStartTime = timeNow;
+    // }
 };
 
 DateTime.prototype.convertForDB = function (date) {
