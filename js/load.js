@@ -17,13 +17,14 @@ $(document).ready(function () {
     $('#btnMaximizeApp').hide();
     $('#appHead').hide();
     _screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
+    _win.setSkipTaskbar(true);
     //Initialize a new App user object
     _user = new AppUser();
     //Initialize a new date time object
     _dateTime = new DateTime();
     _dateTime.initAppStartTime();
     //Initialize a new App state objects
-       _appState = new AppViewState();
+    _appState = new AppViewState();
     //Initialize a new Task logging object and load data from file
     _taskLog = new TaskLog();
     //Initialize a new Waiter object
@@ -58,7 +59,11 @@ $(document).ready(function () {
         UIConfigure(UI_FLOW[_tls.operationIndex]);
     }, function () { });
 
-    _user.authenticate();
+    try {
+        _user.authenticate();
+    } catch (err) {
+        Toast(err, "Fatal Error");
+    }
 });
 
 var startTaskLogging = function () {
