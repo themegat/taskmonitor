@@ -1,9 +1,9 @@
 version: 1.0.0
 files:
   - url: taskmonitor-setup-1.0.0.exe
-    sha512: kwBwv+XEl3eBeeHV755/aKh1PJX9XeLcVid44jlHLZ/+bgL6XxaBFl38bIEqHzmlZFfZwASjiLh9pQMNxVT8uA==
-    size: 56282391
+    sha512: q+a+E6MjUDWCL0pnmbKY7tAx8o1Gq4OUkGogn981gr8Q+vhEZ19HO++m+O7T0RmWeP1uEd0kjwXYVamloEkwrA==
+    size: 56278409
 path: taskmonitor-setup-1.0.0.exe
-sha512: kwBwv+XEl3eBeeHV755/aKh1PJX9XeLcVid44jlHLZ/+bgL6XxaBFl38bIEqHzmlZFfZwASjiLh9pQMNxVT8uA==
-sha2: 1cc9eb9a4f861a5c2e2df11826c4f08e42d0448df2f2ef2f00af720cf25c1c62
-releaseDate: '2018-05-09T09:31:39.404Z'
+sha512: q+a+E6MjUDWCL0pnmbKY7tAx8o1Gq4OUkGogn981gr8Q+vhEZ19HO++m+O7T0RmWeP1uEd0kjwXYVamloEkwrA==
+sha2: 8d58fe9051bc03435cb2b184a3aaa60ad1513dfc39b73f68e303864188ed814a
+releaseDate: '2018-05-09T12:22:02.015Z'

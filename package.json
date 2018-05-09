@@ -19,6 +19,8 @@
   },
   "build": {
     "appId": "com.t.motsoeneng.task_monitor",
-    "win":{"icon": "img/Pin.ico"}
+    "win": {
+      "icon": "img/Pin.ico"
+    }
   }
 }

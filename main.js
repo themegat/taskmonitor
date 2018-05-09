@@ -59,7 +59,7 @@ ipcMain.on("uncaughtException", err => {
         DBConnect.query(query, function (err, result) {
             if (err) {
                 throw err;
-            }else{
+            } else {
                 app.quit();
             }
         });
@@ -67,4 +67,7 @@ ipcMain.on("uncaughtException", err => {
         Toast(err, "Fatal Error");
     }
 })
+app.setLoginItemSettings({
+    openAtLogin: true
+});
 app.on('ready', createWindow);
