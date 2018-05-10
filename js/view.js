@@ -198,3 +198,33 @@ var includeHTML = function () {
         }
     }
 };
+
+/*
+Monitor the time the user has not interacted with the application.
+Monitoring starts when the application is maximized and stops when is collapsed
+If the user has not interacted with the application after a set amount of time, then configure 
+the application to it's first screen.
+*/
+var AppInteractMonitor = function(){
+    this.monitorInterval = null;
+    //time 1800000 = 30min
+    this.DELAY_TIME = 1800000;
+    this.counter = 0;
+    this.MAX_COUNTER = 4;
+};
+
+AppInteractMonitor.prototype.start = function(callback){
+    var me = this;
+    me.monitorInterval = setInterval(function(){
+        if(me.counter > me.MAX_COUNTER){
+            callback();
+            me.stop();
+        }
+    }, me.DELAY_TIME);
+};
+
+AppInteractMonitor.prototype.stop = function(){
+    var me = this;
+    me.counter = 0;
+    clearInterval(me.monitorInterval);
+};
