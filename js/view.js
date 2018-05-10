@@ -106,9 +106,7 @@ AppViewState.prototype.toggleCollapse = function (size) {
     }
 };
 
-// var ResizeApp = function () {
-
-// };
+var ResizeApp = function () {};
 
 ResizeApp.prototype.slideX = function (size, funct) {
     var endPos = _screenWidth - size;
