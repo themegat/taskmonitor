@@ -50,12 +50,7 @@ DateTime.prototype.compare = function (date, dateCompareTo) {
 
 DateTime.prototype.initAppStartTime = function () {
     var timeNow = new Date();
-    // var timeWorkStart = this.timeWorkStart;
-    // if (this.compare(timeNow, timeWorkStart) == 1) {
     this.appStartTime = timeNow;
-    // } else {
-    //     this.appStartTime = timeNow;
-    // }
 };
 
 DateTime.prototype.convertForDB = function (date) {
@@ -111,9 +106,9 @@ AppViewState.prototype.toggleCollapse = function (size) {
     }
 };
 
-var ResizeApp = function () {
+// var ResizeApp = function () {
 
-};
+// };
 
 ResizeApp.prototype.slideX = function (size, funct) {
     var endPos = _screenWidth - size;
