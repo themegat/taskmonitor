@@ -178,7 +178,6 @@ $('#btnNext').on("click", function () {
                     var taskTimeEnd = _dateTime.getDate() + " " + strTime;
                     if (_taskLog.getSize() <= 0) {
                         if (_dateTime.compare(taskTimeEnd, _dateTime.appStartTime) <= 0) {
-                            console.log("22");
                             throw ("Invalid time selected.")
                         }
                         _taskLog.addToDB(_tls.currentTask, _dateTime.appStartTime, taskTimeEnd);
@@ -186,12 +185,7 @@ $('#btnNext').on("click", function () {
                         var taskObj = _taskLog.getLast();
                         if (taskObj !== null) {
                             result = _dateTime.compare(taskTimeEnd, taskObj.timeEnd);
-                            console.log(result);
                             if (result <= 0) {
-                                console.log("23");
-                                console.log(taskTimeEnd);
-                                console.log(taskObj.timeEnd);
-                                console.log(taskObj);
                                 throw ("invalid time selected.")
                             } else {
                                 _taskLog.addToDB(_tls.currentTask, taskObj.timeEnd, taskTimeEnd);
