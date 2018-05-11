@@ -1,5 +1,5 @@
 {
-  "name": "taskmonitor",
+  "name": "task_monitor",
   "version": "1.0.0",
   "description": "Monitor user tasks",
   "main": "main.js",

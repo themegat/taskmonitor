@@ -43,6 +43,10 @@ function createWindow() {
     tray = new Tray(path.join(__dirname, "img/Pin.ico"));
     const contextMenu = Menu.buildFromTemplate([
         {
+            label: 'Restart', click: function () {
+                app.relaunch();
+                app.exit();
+            },
             label: 'Exit', click: function () {
                 app.quit();
             }

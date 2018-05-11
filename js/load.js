@@ -12,6 +12,7 @@ var _user;
 var _waiter;
 var DBConnect;
 var _screenWidth;
+var _inactiveMonitor;
 
 $(document).ready(function () {
     $('#btnMaximizeApp').hide();
@@ -51,6 +52,25 @@ $(document).ready(function () {
 
     _waiter.add("start_logging", function () {
         startTaskLogging();
+        //Initialize the inactivity monitor and start monitoring
+        _inactiveMonitor = new AppInteractMonitor();
+        _inactiveMonitor.registerCallback(function () {
+            if (_appState.isAppCollapsed) {
+                _appState.toggleCollapse();
+            }
+            $("#txtTaskDetails").val("");
+            clearInterval(_logTimeOut);
+            Toast("The application has reset due to no activity from you. Any unsubmitted task has been lost.")
+            _taskLog.arTaskLog = [];
+            _tls.operationIndex = 0;
+            UIConfigure(UI_FLOW[_tls.operationIndex]);
+            $('body').on('click', function () {
+                _dateTime.initAppStartTime();
+                _inactiveMonitor.start();
+                $('body').off('click');
+            });
+        });
+        _inactiveMonitor.start();
         $('#appHead').show();
     }, function () { });
 

@@ -155,6 +155,7 @@ TaskLog.prototype.allDataToString = function () {
 
 //User action, button events for next button
 $('#btnNext').on("click", function () {
+    _inactiveMonitor.reset();
     try {
         if (_tls.operationIndex == 0) {
             _tls.currentTask = $('#txtTaskDetails').val();
@@ -202,6 +203,7 @@ $('#btnNext').on("click", function () {
 
 //User action, button events for yes/no buttons
 $('#btnYes').on("click", function () {
+    _inactiveMonitor.reset();
     if (_tls.operationIndex == 1) {
         $(".hideable").hide();
         $('#txtQuestion').html("");
@@ -213,6 +215,7 @@ $('#btnYes').on("click", function () {
     }
 });
 $('#btnNo').on("click", function () {
+    _inactiveMonitor.reset();
     if (_tls.operationIndex == 1) {
         _tls.operationIndex = 2;
         UIConfigure(UI_FLOW[_tls.operationIndex]);
@@ -220,11 +223,13 @@ $('#btnNo').on("click", function () {
 });
 
 $('#btnLogin').on("click", function () {
+    _inactiveMonitor.reset();
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
     _user.setUser(id, fName, lName);
 });
 
 $("#btnMaximizeApp").on("click", function () {
+    _inactiveMonitor.reset();
     if (_logTimeOut !== null & _logTimeOut !== undefined) {
         clearTimeout(_logTimeOut);
         UIConfigure(UI_FLOW[_tls.operationIndex]);
