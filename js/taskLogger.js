@@ -223,9 +223,14 @@ $('#btnNo').on("click", function () {
 });
 
 $('#btnLogin').on("click", function () {
-    _inactiveMonitor.reset();
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
     _user.setUser(id, fName, lName);
+});
+
+$('#btnSignOut').on("click", function () {
+    localStorage.setItem("user_id", "");
+    _app.relaunch();
+    _app.exit();
 });
 
 $("#btnMaximizeApp").on("click", function () {

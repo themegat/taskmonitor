@@ -45,7 +45,9 @@ $(document).ready(function () {
 
     _waiter.add("user_auth", function () {
         UIConfigure(UI_FLOW[3]);
-        _appState.toggleCollapse(430);
+        setTimeout(function () {
+            _appState.toggleCollapse(430);
+        }, 2000);
     }, function () {
         _taskLog.initFromDB();
     });

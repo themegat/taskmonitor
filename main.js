@@ -46,11 +46,12 @@ function createWindow() {
             label: 'Restart', click: function () {
                 app.relaunch();
                 app.exit();
-            },
+            }
+        }, {
             label: 'Exit', click: function () {
                 app.quit();
             }
-        },
+        }
     ])
     tray.setToolTip('Task Monitor')
     tray.setContextMenu(contextMenu)
