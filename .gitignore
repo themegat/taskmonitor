@@ -3809,3 +3809,7 @@ node_modules/yauzl/LICENSE
 node_modules/yauzl/README.md
 node_modules/yauzl/index.js
 node_modules/yauzl/package.json
+dist/Task_Monitor Setup 1.0.0.exe
+dist/Task_Monitor Setup 1.0.0.exe.blockmap
+dist/win-unpacked/resources/app-update.yml
+electron
