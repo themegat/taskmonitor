@@ -1,6 +1,6 @@
 {
   "name": "Task_Monitor",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Monitor user tasks",
   "main": "main.js",
   "scripts": {

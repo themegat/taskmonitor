@@ -23734,3 +23734,5 @@ node_modules/yargs-parser/node_modules/camelcase/package.json
 node_modules/yargs-parser/node_modules/camelcase/readme.md
 .vscode/settings.json
 dist/electron-builder-effective-config.yaml
+dist/win-unpacked.zip
+dist/win-unpacked.zip
