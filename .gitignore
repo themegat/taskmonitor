@@ -3813,3 +3813,5 @@ dist/Task_Monitor Setup 1.0.0.exe
 dist/Task_Monitor Setup 1.0.0.exe.blockmap
 dist/win-unpacked/resources/app-update.yml
 electron
+dist/win-unpacked/electron.exe
+dist

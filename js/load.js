@@ -67,6 +67,7 @@ $(document).ready(function () {
             _tls.operationIndex = 0;
             UIConfigure(UI_FLOW[_tls.operationIndex]);
             $('body').on('click', function () {
+                _dateTime = new DateTime();
                 _dateTime.initAppStartTime();
                 _inactiveMonitor.start();
                 $('body').off('click');
