@@ -104,6 +104,11 @@ $(document).ready(function () {
     } catch (err) {
         Toast(err, "Fatal Error");
     }
+
+    window.addEventListener('error', function (evt) {
+        evt.preventDefault();
+    });
+
 });
 
 var startTaskLogging = function () {
@@ -135,4 +140,22 @@ Waiter.prototype.call = function (functionName, onSuccessResult, onFailResult) {
             }
         }
     }
+};
+
+window.onerror = function (msg, url, line) {
+    var dateNow = new Date();
+    try {
+        msg = msg.replace(/'/g, '');
+        var query = "insert into error_log values(0,'" + msg + "', '" + _dateTime.convertForDB(dateNow) + "', '" + _user.id + "')";
+        DBConnect.query(query, function (err, result) {
+            if (err) {
+                throw err;
+            } else {
+                Toast("A fatal error occured. It is advised to restart the application. If the error persists, please contact the administrator.", "Fatal Error");
+            }
+        });
+    } catch (err) {
+        Toast(err, "Fatal Error");
+    }
+    return true; // same as preventDefault
 };

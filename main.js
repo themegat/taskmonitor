@@ -1,5 +1,4 @@
 const electron = require('electron');
-const { ipcMain } = require('electron');
 const { app, BrowserWindow, Menu, Tray } = require('electron');
 const path = require('path');
 const url = require('url');
@@ -57,21 +56,7 @@ function createWindow() {
     tray.setContextMenu(contextMenu)
 }
 
-ipcMain.on("uncaughtException", err => {
-    var dateNow = new Date();
-    try {
-        var query = "insert into error_log values(0,'" + err + "', '" + dateNow + "', '" + _user.id + "')";
-        DBConnect.query(query, function (err, result) {
-            if (err) {
-                throw err;
-            } else {
-                app.quit();
-            }
-        });
-    } catch (err) {
-        Toast(err, "Fatal Error");
-    }
-})
+
 app.setLoginItemSettings({
     openAtLogin: true
 });
