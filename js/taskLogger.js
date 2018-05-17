@@ -15,7 +15,7 @@ var UIState = function (question, input, action) {
 const UI_FLOW = [];
 UI_FLOW.push(new UIState("What have you been up to?", "text", "next"));
 UI_FLOW.push(new UIState("Are you still performing this task", "display", "response"));
-UI_FLOW.push(new UIState("When did u finish the task?", "time", "next"));
+UI_FLOW.push(new UIState("When did u finish the task?", "time", "next_back"));
 UI_FLOW.push(new UIState("You are not signed in. Sign in to continue.", "login", ""));
 
 /*
@@ -56,6 +56,12 @@ var UIConfigure = function (operation) {
             $('#lo_ResponseButtons').removeClass("hidden");
             $('#lo_ResponseButtons').show();
             break;
+        case "next_back":
+            $('#btnBack').removeClass("hidden");
+            $('#btnBack').show();
+            $('#btnNext').removeClass("hidden");
+            $('#btnNext').show();
+            break
     }
 };
 
@@ -172,6 +178,10 @@ $('#btnNext').on("click", function () {
             if (strTime == "") {
                 throw ("Select a time to continue");
             } else {
+                if(strTime == "Now"){
+                    var tempDate = new Date();
+                    strTime = tempDate.getHours() + ":" + tempDate.getMinutes();
+                }
                 var result = _dateTime.isTimePast(strTime);
                 if (parseInt(result) > 0) {
                     throw ("Invalid time selected. Cannot select a future value");
@@ -201,6 +211,13 @@ $('#btnNext').on("click", function () {
     }
 });
 
+$('#btnBack').on("click", function () {
+    _inactiveMonitor.reset();
+    $('#txtTaskDetails').val("");
+    _tls.operationIndex = 1;
+    UIConfigure(UI_FLOW[_tls.operationIndex]);
+});
+
 //User action, button events for yes/no buttons
 $('#btnYes').on("click", function () {
     _inactiveMonitor.reset();
@@ -222,6 +239,13 @@ $('#btnNo').on("click", function () {
     }
 });
 
+$('#btnCancel').on("click", function () {
+    _inactiveMonitor.reset();
+    $('#txtTaskDetails').val("");
+    _tls.operationIndex = 0;
+    UIConfigure(UI_FLOW[_tls.operationIndex]);
+});
+
 $('#btnLogin').on("click", function () {
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
     _user.setUser(id, fName, lName);
@@ -240,4 +264,13 @@ $("#btnMaximizeApp").on("click", function () {
         UIConfigure(UI_FLOW[_tls.operationIndex]);
         _appState.toggleCollapse();
     }
+});
+
+$("#txtTime").on('click', function () {
+    $('#btnTimeNow').removeClass("blue");
+    $('#txtTime').val("");
+});
+$("#btnTimeNow").on('click', function () {
+    $('#btnTimeNow').addClass("blue");
+    $('#txtTime').val("Now");
 });

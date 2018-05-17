@@ -70,30 +70,36 @@
                     <div id="lo_TextDisplay" class="field hideable hidden">
                         <label>Task</label>
                         <div id="segTaskDetails" class="ui segment" style="max-height: 30% !important; overflow-y: scroll !important">
-                            <!-- On the other hand, my scenario seems to be a very good fit 
-                            for CSS, so I was hoping there is some kind of a CSS 
-                            trick to let me do it. I have a printable version hyperlink on my form.  -->
                         </div>
                     </div>
                     <!-- Task end time picker -->
-                    <div class="ui calendar hideable hidden" id="lo_TimePicker">
-                        <div class="ui input left icon">
+                    <div class="ui calendar hideable hidden six wide column" id="lo_TimePicker">
+                        <div class="ui input left icon right action">
                             <i class="calendar icon"></i>
-                            <input id="txtTime" type="text" placeholder="Time" readonly>
+                            <input id="txtTime" type="text" placeholder="Time" readonly class="half">
+                            <button id="btnTimeNow" class="ui button">Now</button>
                         </div>
                     </div>
                     <br>
-                    <!-- Task log action buttons - yes/no -->
+                    <!-- Task log action buttons - yes/no/cancel -->
                     <div id="lo_ResponseButtons" class="ui buttons hideable hidden">
                         <button id="btnYes" class="ui button positive">Yes</button>
                         <div class="or"></div>
-                        <button id="btnNo" class="ui button negetive">No</button>
+                        <button id="btnNo" class="ui button ">No</button>
+                        <div class="or"></div>
+                        <button id="btnCancel" class="ui button red">Cancel</button>
                     </div>
-                    <!-- Task log action button - next -->
-                    <button id="btnNext" class="ui button right labeled icon hideable hidden">
-                        <i class="right arrow icon"></i>
-                        Next
-                    </button>
+                    <!-- Task log action button - next and back -->
+                    <div class="ui buttons">
+                        <button id="btnBack" class="ui button left labeled icon hideable hidden">
+                            <i class="left arrow icon"></i>
+                            Back
+                        </button>
+                        <button id="btnNext" class="ui button right labeled icon hideable hidden">
+                            <i class="right arrow icon"></i>
+                            Next
+                        </button>
+                    </div>
                 </div>
             </div>
             <div class="one wide column"></div>

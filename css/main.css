@@ -37,3 +37,7 @@ body{
     margin-left: 5% !important;
     width: 60% !important;
 }
+
+.half{
+    width: 50% !important;
+}

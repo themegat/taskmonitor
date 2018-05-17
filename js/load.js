@@ -13,8 +13,25 @@ var _waiter;
 var DBConnect;
 var _screenWidth;
 var _inactiveMonitor;
+var _isDevToolOn = false;
 
 $(document).ready(function () {
+    document.addEventListener("keydown", function (e) {
+        if (e.which === 123) {
+            _win.toggleDevTools();
+            if (_isDevToolOn) {
+                _isDevToolOn = false;
+                appResizer.slideX(325, function () {
+                    _win.setSize(325, _win.getSize()[1]);
+                });
+            } else {
+                _isDevToolOn = true;
+                _win.setSize(825, _win.getSize()[1]);
+                appResizer.slideX(825, null);
+            }
+        }
+    });
+
     $('#btnMaximizeApp').hide();
     $('#appHead').hide();
     _screenWidth = electron.screen.getPrimaryDisplay().workAreaSize.width
