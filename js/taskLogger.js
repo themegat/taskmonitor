@@ -164,21 +164,26 @@ $('#btnNext').on("click", function () {
     _inactiveMonitor.reset();
     try {
         if (_tls.operationIndex == 0) {
+            console.log("laa");
             _tls.currentTask = $('#txtTaskDetails').val();
             if (_tls.currentTask == "" || _tls.currentTask.length < 5) {
                 throw ("Invalid task description");
             } else {
+                console.log("laaf");
                 $('#segTaskDetails').html(_tls.currentTask);
                 _tls.operationIndex = 1;
                 UIConfigure(UI_FLOW[_tls.operationIndex]);
             }
         } else if (_tls.operationIndex == 2) {
+            console.log("lah");
             $('#txtTaskDetails').val("");
             var strTime = $('#txtTime').val();
             if (strTime == "") {
                 throw ("Select a time to continue");
             } else {
+                console.log("flaa");
                 if(strTime == "Now"){
+                    console.log("lasa");
                     var tempDate = new Date();
                     strTime = tempDate.getHours() + ":" + tempDate.getMinutes();
                 }
@@ -186,19 +191,24 @@ $('#btnNext').on("click", function () {
                 if (parseInt(result) > 0) {
                     throw ("Invalid time selected. Cannot select a future value");
                 } else {
+                    console.log("laasy");
                     var taskTimeEnd = _dateTime.getDate() + " " + strTime;
                     if (_taskLog.getSize() <= 0) {
+                        console.log("wa laa");
                         if (_dateTime.compare(taskTimeEnd, _dateTime.appStartTime) <= 0) {
                             throw ("Invalid time selected.")
                         }
                         _taskLog.addToDB(_tls.currentTask, _dateTime.appStartTime, taskTimeEnd);
                     } else {
+                        console.log("flaa");
                         var taskObj = _taskLog.getLast();
                         if (taskObj !== null) {
+                            console.log("laa74");
                             result = _dateTime.compare(taskTimeEnd, taskObj.timeEnd);
                             if (result <= 0) {
                                 throw ("invalid time selected.")
                             } else {
+                                console.log("l745aa");
                                 _taskLog.addToDB(_tls.currentTask, taskObj.timeEnd, taskTimeEnd);
                             }
                         }
