@@ -88,16 +88,27 @@ var TaskLog = function () {
 
 TaskLog.prototype.addToDB = function (taskDescription, taskStart, taskEnd) {
     var taskLog = this;
+    console.log("Task list");
+    console.log(taskLog);
+    console.log("task:");
+    console.log(taskDescription);
+    console.log(taskStart);
+    console.log(taskEnd);
     var tempStartDate = taskStart;
     if (taskStart instanceof Date) {
         tempStartDate = _dateTime.convertForDB(taskStart);
     }
+    console.log("time");
+    console.log(tempStartDate);
     try {
         var query = "insert into task values(0, '" + taskDescription + "','" + tempStartDate + "','" + taskEnd +
             "','" + _user.id + "')";
+            console.log(query);
         DBConnect.query(query, function (err, result) {
             if (err) throw err;
             taskLog.addToList(taskDescription, taskStart, taskEnd);
+            console.log("almost done");
+            console.log(taskLog);
             _waiter.call("goto_new_task", "", null);
         })
     } catch (err) {
