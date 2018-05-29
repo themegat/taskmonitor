@@ -53,12 +53,13 @@ $(document).ready(function () {
 
     _appState.toggleCollapse();
 
-    DBConnect = mySql.createConnection({
-        host: "192.168.15.173",
-        user: "admin",
-        password: "Password1",
-        database: "task_db"
-    });
+    // DBConnect = mySql.createConnection({
+    //     host: "192.168.15.173",
+    //     user: "admin",
+    //     password: "Password1",
+    //     database: "task_db"
+    // });
+    initDBConnection();
 
     _waiter.add("user_auth", function () {
         UIConfigure(UI_FLOW[3]);
@@ -74,6 +75,7 @@ $(document).ready(function () {
         //Initialize the inactivity monitor and start monitoring
         _inactiveMonitor = new AppInteractMonitor();
         _inactiveMonitor.registerCallback(function () {
+            DBConnect.destroy();
             if (_appState.isAppCollapsed) {
                 _appState.toggleCollapse();
             }
@@ -84,6 +86,7 @@ $(document).ready(function () {
             _tls.operationIndex = 0;
             UIConfigure(UI_FLOW[_tls.operationIndex]);
             $('body').on('click', function () {
+                initDBConnection();
                 _dateTime = new DateTime();
                 _dateTime.initAppStartTime();
                 _inactiveMonitor.start();
@@ -110,6 +113,16 @@ $(document).ready(function () {
     });
 
 });
+
+var initDBConnection = function () {
+    DBConnect = mySql.createConnection({
+        host: "192.168.15.173",
+        user: "admin",
+        password: "Password1",
+        database: "task_db"
+    });
+
+};
 
 var startTaskLogging = function () {
     setTimeout(function () {
