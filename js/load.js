@@ -53,12 +53,6 @@ $(document).ready(function () {
 
     _appState.toggleCollapse();
 
-    // DBConnect = mySql.createConnection({
-    //     host: "192.168.15.173",
-    //     user: "admin",
-    //     password: "Password1",
-    //     database: "task_db"
-    // });
     initDBConnection();
 
     _waiter.add("user_auth", function () {
