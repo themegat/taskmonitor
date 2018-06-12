@@ -52,7 +52,6 @@ $(document).ready(function () {
     $('#txtQuestion').html("");
 
     _appState.toggleCollapse();
-
     initDBConnection();
 
     _waiter.add("user_auth", function () {
@@ -96,26 +95,38 @@ $(document).ready(function () {
         UIConfigure(UI_FLOW[_tls.operationIndex]);
     }, function () { });
 
-    try {
-        _user.authenticate();
-    } catch (err) {
-        Toast(err, "Fatal Error");
-    }
-
+    setTimeout(function () {
+        startAuthentication();
+    }, 2000);
+    
     window.addEventListener('error', function (evt) {
         evt.preventDefault();
     });
 
 });
 
+var startAuthentication = function () {
+    DBConnect.connect(err => {
+        if (err) {
+            $("#txtIPAddr").val(localStorage.getItem("IPAddr"));
+            $("#txtDBUser").val(localStorage.getItem("dbUser"));
+            $("#txtDBPWord").val(localStorage.getItem("dbPWord"));
+            UIConfigure(UI_FLOW[4]);
+            _appState.toggleCollapse(430);
+            Toast(err, "Fatal Error");
+        } else {
+            _user.authenticate();
+        }
+    })
+}
+
 var initDBConnection = function () {
     DBConnect = mySql.createConnection({
-        host: "192.168.15.173",
-        user: "admin",
-        password: "Password1",
+        host: localStorage.getItem("IPAddr"),
+        user: localStorage.getItem("dbUser"),
+        password: localStorage.getItem("dbPWord"),
         database: "task_db"
     });
-
 };
 
 var startTaskLogging = function () {

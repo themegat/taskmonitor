@@ -45,6 +45,22 @@
 
                 <!-- Task logging form -->
                 <div id="frmTaskLog" class="ui form">
+                    <!-- Server access details -->
+                    <div id="lo_serverAccess" class="hideable hidden">
+                        <div class="field">
+                            <label>Server IP address</label>
+                            <input type="text" id="txtIPAddr" placeholder="Server Address" maxlength="15" minlength="5" />
+                        </div>
+                        <div class="field">
+                            <label>Database user name</label>
+                            <input type="text" id="txtDBUser" placeholder="Database User" />
+                        </div>
+                        <div class="field">
+                            <label>Database password</label>
+                            <input type="password" id="txtDBPWord" placeholder="Database Password" />
+                        </div>
+                        <button class="ui button" id="btnReConnect">Re-Connect</button>
+                    </div>
                     <!-- Login details input -->
                     <div id="lo_login" class="hideable hidden">
                         <div class="field">
@@ -59,7 +75,7 @@
                             <label>Surname</label>
                             <input type="text" id="txtLName" placeholder="Surname" minlength="3" maxlength="20" />
                         </div>
-                        <button class="ui button" id="btnLogin">Login</button>
+                        <button class="ui button" id="btnLogin">Sign In</button>
                     </div>
                     <!-- Task detail input -->
                     <div id="lo_TextIn" class="field hideable hidden">

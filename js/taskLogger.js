@@ -17,6 +17,7 @@ UI_FLOW.push(new UIState("What have you been up to?", "text", "next"));
 UI_FLOW.push(new UIState("Are you still performing this task", "display", "response"));
 UI_FLOW.push(new UIState("When did u finish the task?", "time", "next_back"));
 UI_FLOW.push(new UIState("You are not signed in. Sign in to continue.", "login", ""));
+UI_FLOW.push(new UIState("Please check the server details.", "access", ""));
 
 /*
     Configure the user interface based on operation to be performed. 
@@ -44,6 +45,10 @@ var UIConfigure = function (operation) {
         case "login":
             $('#lo_login').removeClass("hidden");
             $('#lo_login').show();
+            break;
+        case "access":
+            $('#lo_serverAccess').removeClass("hidden");
+            $('#lo_serverAccess').show();
             break;
     }
 
@@ -178,7 +183,7 @@ $('#btnNext').on("click", function () {
             if (strTime == "") {
                 throw ("Select a time to continue");
             } else {
-                if(strTime == "Now"){
+                if (strTime == "Now") {
                     var tempDate = new Date();
                     strTime = tempDate.getHours() + ":" + tempDate.getMinutes();
                 }
@@ -249,12 +254,18 @@ $('#btnCancel').on("click", function () {
 $('#btnLogin').on("click", function () {
     var id = $('#txtEmpNo').val(), fName = $('#txtFName').val(), lName = $('#txtLName').val();
     _user.setUser(id, fName, lName);
+    $('#txtEmpNo').val("");
+    $('#txtFName').val("");
+    $('#txtLName').val("");
 });
 
 $('#btnSignOut').on("click", function () {
     localStorage.setItem("user_id", "");
-    _app.relaunch();
-    _app.exit();
+    _user.id = "";
+    _appState.toggleCollapse();
+    setTimeout(f => {
+        _user.authenticate();
+    }, 2000);
 });
 
 $("#btnMaximizeApp").on("click", function () {
@@ -273,4 +284,21 @@ $("#txtTime").on('click', function () {
 $("#btnTimeNow").on('click', function () {
     $('#btnTimeNow').addClass("blue");
     $('#txtTime').val("Now");
+});
+
+$('#btnReConnect').on("click", function () {
+    var ipAddr = $("#txtIPAddr").val();
+    var dbUser = $("#txtDBUser").val();
+    var dbPWord = $("#txtDBPWord").val();
+
+    localStorage.setItem("IPAddr", ipAddr);
+    localStorage.setItem("dbUser", dbUser);
+    localStorage.setItem("dbPWord", dbPWord);
+
+    _appState.toggleCollapse();
+    initDBConnection();
+
+    setTimeout(f => {
+        startAuthentication();
+    }, 2000);
 });
